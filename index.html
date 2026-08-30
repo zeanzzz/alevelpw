@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow: hidden; }
-        .app-container { max-width: 414px; margin: 0 auto; background: white; height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.1); }
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow: hidden; transition: background-color 0.3s ease; }
+        .app-container { max-width: 414px; margin: 0 auto; background: white; height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.1); transition: background-color 0.3s ease, color 0.3s ease; }
         .view { flex: 1; overflow-y: auto; padding-bottom: 140px; display: none; position: relative; }
         .view.active { display: block; }
-        .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: none; justify-content: space-between; align-items: center; background: white; padding: 0 24px 15px 24px; z-index: 50; box-sizing: border-box; }
+        .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: none; justify-content: space-between; align-items: center; background: white; padding: 0 24px 15px 24px; z-index: 50; box-sizing: border-box; transition: background-color 0.3s ease, border-color 0.3s ease; }
         .scan-btn { width: 60px; height: 60px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-top: -35px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); border: 4px solid white; z-index: 60; flex-shrink: 0; }
         
         /* Smooth Collapsible Animations */
@@ -34,6 +35,25 @@
         .ptr-icon-box { position: relative; z-index: 1; width: 44px; height: 44px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 18px; border: 2px solid rgba(255, 255, 255, 0.1); }
         .ptr-super-spinner { width: 24px; height: 24px; border: 3px solid rgba(255, 255, 255, 0.1); border-top: 3px solid #60a5fa; border-right: 3px solid #a855f7; border-radius: 50%; animation: spin 0.7s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* THEME MODES */
+        /* Dark Theme */
+        body.theme-dark { background-color: #020617; }
+        body.theme-dark .app-container { background-color: #0f172a; color: #f8fafc; }
+        body.theme-dark .nav-bottom { background-color: #0f172a; border-top-color: #1e293b; }
+        body.theme-dark .scan-btn { border-color: #0f172a; }
+        body.theme-dark .theme-text-primary { color: #f8fafc !important; }
+        body.theme-dark .theme-card { background-color: #1e293b !important; border-color: #334155 !important; }
+        body.theme-dark .theme-card-sub { background-color: #0f172a !important; border-color: #334155 !important; color: #e2e8f0 !important; }
+        
+        /* Gradient Theme */
+        body.theme-gradient { background-color: #180b2d; }
+        body.theme-gradient .app-container { background: linear-gradient(165deg, #0f172a 0%, #2e1065 50%, #4c1d95 100%); color: #ffffff; }
+        body.theme-gradient .nav-bottom { background-color: rgba(15, 23, 42, 0.95); border-top-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+        body.theme-gradient .scan-btn { background: linear-gradient(135deg, #a855f7, #ec4899); border-color: #180b2d; }
+        body.theme-gradient .theme-text-primary { color: #ffffff !important; }
+        body.theme-gradient .theme-card { background-color: rgba(255, 255, 255, 0.1) !important; border-color: rgba(255, 255, 255, 0.15) !important; backdrop-filter: blur(8px); }
+        body.theme-gradient .theme-card-sub { background-color: rgba(0, 0, 0, 0.2) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #f3e8ff !important; }
     </style>
 </head>
 <body>
@@ -68,13 +88,13 @@
         <header class="flex justify-between items-center mb-6">
             <div>
                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest" data-i18n="practitionerProfile">PRACTITIONER PROFILE</p>
-                <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Dr. Winnie Law</h2>
+                <h2 class="text-2xl font-extrabold theme-text-primary text-slate-800 tracking-tight">Dr. Winnie Law</h2>
             </div>
             <div class="w-10 h-10 rounded-full bg-blue-500 text-white font-semibold flex items-center justify-center text-sm border-2 border-white shadow-sm">WL</div>
         </header>
 
         <!-- WEEKLY ERGONOMIC DATA CARD -->
-        <div class="bg-[#0f172a] rounded-3xl p-5 text-white mb-5 shadow-lg">
+        <div class="bg-[#0f172a] rounded-3xl p-5 text-white mb-5 shadow-lg border border-slate-800">
             <div class="flex justify-between items-center mb-4">
                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest" data-i18n="weeklyDataTitle">WEEKLY ERGONOMIC DATA FROM ALPHA LOUPES</p>
                 <span class="bg-slate-800 text-slate-300 text-[9px] px-2.5 py-1 rounded-full font-medium"><span data-i18n="totalProcedureTime">Total Procedure Time</span>: <strong class="text-white">28h 15m</strong></span>
@@ -111,15 +131,15 @@
 
         <!-- BENDING STATS GRID -->
         <div class="grid grid-cols-2 gap-3 mb-4">
-            <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4 relative overflow-hidden">
-                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2" data-i18n="weeklySevereBending">Weekly Severe Bending %</p>
+            <div class="theme-card bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4 relative overflow-hidden">
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2 opacity-80" data-i18n="weeklySevereBending">Weekly Severe Bending %</p>
                 <div class="flex items-baseline justify-between">
-                    <span class="text-3xl font-extrabold text-slate-900">8%</span>
-                    <div class="flex items-center text-emerald-600 font-bold text-xs gap-1">
+                    <span class="text-3xl font-extrabold theme-text-primary text-slate-900">8%</span>
+                    <div class="flex items-center text-emerald-500 font-bold text-xs gap-1">
                         <i class="fas fa-arrow-down text-lg"></i>
                         <div class="leading-tight text-[9px]">
                             <div data-i18n="improvement">Improvement</div>
-                            <div class="text-emerald-700 font-extrabold">-3%</div>
+                            <div class="font-extrabold">-3%</div>
                         </div>
                     </div>
                 </div>
@@ -128,15 +148,15 @@
                 </div>
             </div>
 
-            <div class="bg-amber-50/50 border border-amber-100 rounded-2xl p-4">
-                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2" data-i18n="weeklyMildBending">Weekly Mild Bending %</p>
+            <div class="theme-card bg-amber-50/50 border border-amber-100 rounded-2xl p-4">
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2 opacity-80" data-i18n="weeklyMildBending">Weekly Mild Bending %</p>
                 <div class="flex items-baseline justify-between">
-                    <span class="text-3xl font-extrabold text-slate-900">22%</span>
-                    <div class="flex items-center text-amber-600 font-bold text-xs gap-1">
+                    <span class="text-3xl font-extrabold theme-text-primary text-slate-900">22%</span>
+                    <div class="flex items-center text-amber-500 font-bold text-xs gap-1">
                         <i class="fas fa-arrow-up text-lg"></i>
                         <div class="leading-tight text-[9px]">
                             <div data-i18n="worsening">Worsening</div>
-                            <div class="text-amber-700 font-extrabold">+2%</div>
+                            <div class="font-extrabold">+2%</div>
                         </div>
                     </div>
                 </div>
@@ -144,61 +164,61 @@
         </div>
 
         <!-- POSTURE BREAKDOWN -->
-        <div class="bg-white border border-slate-100 rounded-3xl p-4 mb-6 shadow-sm">
-            <h4 class="font-bold text-slate-800 text-xs mb-3" data-i18n="postureBreakdown">Posture Breakdown</h4>
+        <div class="theme-card bg-white border border-slate-100 rounded-3xl p-4 mb-6 shadow-sm">
+            <h4 class="font-bold theme-text-primary text-slate-800 text-xs mb-3" data-i18n="postureBreakdown">Posture Breakdown</h4>
             <div class="space-y-2.5 text-[10px] font-semibold">
                 <div class="flex items-center gap-2">
-                    <span class="w-24 text-slate-600"><span data-i18n="neutral">Neutral</span>: <strong class="text-slate-800">70%</strong></span>
-                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <span class="w-24 opacity-80"><span data-i18n="neutral">Neutral</span>: <strong class="theme-text-primary">70%</strong></span>
+                    <div class="flex-1 bg-slate-100/20 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-emerald-500 h-full rounded-full" style="width: 70%"></div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="w-24 text-slate-600"><span data-i18n="mildBend">Mild Bend</span>: <strong class="text-slate-800">22%</strong></span>
-                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <span class="w-24 opacity-80"><span data-i18n="mildBend">Mild Bend</span>: <strong class="theme-text-primary">22%</strong></span>
+                    <div class="flex-1 bg-slate-100/20 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-amber-500 h-full rounded-full" style="width: 22%"></div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="w-24 text-slate-600"><span data-i18n="severeBend">Severe Bend</span>: <strong class="text-slate-800">8%</strong></span>
-                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <span class="w-24 opacity-80"><span data-i18n="severeBend">Severe Bend</span>: <strong class="theme-text-primary">8%</strong></span>
+                    <div class="flex-1 bg-slate-100/20 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-red-500 h-full rounded-full" style="width: 8%"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="bg-slate-900 rounded-3xl p-5 text-white mb-6">
+        <div class="bg-slate-900 rounded-3xl p-5 text-white mb-6 border border-slate-800">
             <p class="text-[10px] opacity-60 uppercase font-bold tracking-widest" data-i18n="todaysPoints">Today's Points</p>
             <h3 class="text-2xl font-bold">+140 <span data-i18n="points">Points</span></h3>
             <div class="w-full bg-white/20 h-1.5 rounded-full mt-3"><div class="bg-blue-400 h-full rounded-full" style="width: 70%"></div></div>
         </div>
 
-        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider" data-i18n="quickStretches">Quick Clinical Stretches</h3>
+        <h3 class="font-bold theme-text-primary text-slate-800 mb-3 text-[10px] uppercase tracking-wider" data-i18n="quickStretches">Quick Clinical Stretches</h3>
         <div class="grid grid-cols-2 gap-3 mb-6">
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-blue-50 border border-blue-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-arrows-up-down text-blue-600 mb-2"></i>
-                <p class="font-bold text-xs" data-i18n="cervical">Cervical</p>
-                <p class="text-[9px] text-blue-600 font-bold">15 PTS</p>
+            <div onclick="navigateTo('scan-view')" class="theme-card p-4 bg-blue-50/60 border border-blue-100 rounded-2xl cursor-pointer">
+                <i class="fas fa-arrows-up-down text-blue-500 mb-2"></i>
+                <p class="font-bold text-xs theme-text-primary" data-i18n="cervical">Cervical</p>
+                <p class="text-[9px] text-blue-500 font-bold">15 PTS</p>
             </div>
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-orange-50 border border-orange-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-hand-sparkles text-orange-600 mb-2"></i>
-                <p class="font-bold text-xs" data-i18n="wristRelease">Wrist Release</p>
-                <p class="text-[9px] text-orange-600 font-bold">15 PTS</p>
+            <div onclick="navigateTo('scan-view')" class="theme-card p-4 bg-orange-50/60 border border-orange-100 rounded-2xl cursor-pointer">
+                <i class="fas fa-hand-sparkles text-orange-500 mb-2"></i>
+                <p class="font-bold text-xs theme-text-primary" data-i18n="wristRelease">Wrist Release</p>
+                <p class="text-[9px] text-orange-500 font-bold">15 PTS</p>
             </div>
         </div>
 
-        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider" data-i18n="quickExercises">Quick Clinical Exercises</h3>
+        <h3 class="font-bold theme-text-primary text-slate-800 mb-3 text-[10px] uppercase tracking-wider" data-i18n="quickExercises">Quick Clinical Exercises</h3>
         <div class="grid grid-cols-2 gap-3">
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-green-50 border border-green-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-child-reaching text-green-600 mb-2"></i>
-                <p class="font-bold text-xs" data-i18n="chinTucks">Chin Tucks</p>
-                <p class="text-[9px] text-green-700 font-bold">10 PTS</p>
+            <div onclick="navigateTo('scan-view')" class="theme-card p-4 bg-green-50/60 border border-green-100 rounded-2xl cursor-pointer">
+                <i class="fas fa-child-reaching text-green-500 mb-2"></i>
+                <p class="font-bold text-xs theme-text-primary" data-i18n="chinTucks">Chin Tucks</p>
+                <p class="text-[9px] text-green-500 font-bold">10 PTS</p>
             </div>
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-purple-50 border border-purple-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-person-praying text-purple-600 mb-2"></i>
-                <p class="font-bold text-xs" data-i18n="prayerStretch">Prayer Stretch</p>
-                <p class="text-[9px] text-purple-700 font-bold">10 PTS</p>
+            <div onclick="navigateTo('scan-view')" class="theme-card p-4 bg-purple-50/60 border border-purple-100 rounded-2xl cursor-pointer">
+                <i class="fas fa-person-praying text-purple-500 mb-2"></i>
+                <p class="font-bold text-xs theme-text-primary" data-i18n="prayerStretch">Prayer Stretch</p>
+                <p class="text-[9px] text-purple-500 font-bold">10 PTS</p>
             </div>
         </div>
     </div>
@@ -206,15 +226,15 @@
     <!-- LEARN VIEW -->
     <div id="learn-view" class="view">
         <div class="p-6">
-            <div class="flex space-x-2 mb-6 bg-slate-100 p-1 rounded-xl">
+            <div class="flex space-x-2 mb-6 theme-card bg-slate-100 p-1 rounded-xl">
                 <button onclick="switchLearnTab('pain')" id="tab-pain" class="tab-btn active flex-1 py-2 rounded-lg text-[9px] font-bold" data-i18n="tabAnatomicMap">ANATOMIC MAP</button>
-                <button onclick="switchLearnTab('library')" id="tab-library" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold" data-i18n="tabLibrary">LIBRARY</button>
-                <button onclick="switchLearnTab('events')" id="tab-events" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold" data-i18n="tabEvents">EVENTS</button>
+                <button onclick="switchLearnTab('library')" id="tab-library" class="tab-btn flex-1 py-2 rounded-lg text-slate-400 text-[9px] font-bold" data-i18n="tabLibrary">LIBRARY</button>
+                <button onclick="switchLearnTab('events')" id="tab-events" class="tab-btn flex-1 py-2 rounded-lg text-slate-400 text-[9px] font-bold" data-i18n="tabEvents">EVENTS</button>
             </div>
             
             <div id="sub-pain">
-                <div class="relative bg-slate-50 rounded-3xl h-[380px] border border-slate-200 flex items-center justify-center overflow-hidden">
-                    <i class="fas fa-person text-[320px] text-slate-200"></i>
+                <div class="relative theme-card bg-slate-50 rounded-3xl h-[380px] border border-slate-200 flex items-center justify-center overflow-hidden">
+                    <i class="fas fa-person text-[320px] opacity-30 text-slate-400"></i>
                     <div onclick="openDiagnosis('Cervical Spine', 'Targeting scalene and upper trap tension.')" class="pain-node" style="top:12%; left:47%;"></div>
                     <div onclick="openDiagnosis('Upper Traps', 'Release shrugging tension from instrumentation.')" class="pain-node" style="top:18%; left:38%;"></div>
                     <div onclick="openDiagnosis('Forearm Flexors', 'Counteract tool gripping fatigue.')" class="pain-node" style="top:38%; left:28%;"></div>
@@ -241,9 +261,9 @@
                 <p class="text-[10px] font-bold opacity-80 uppercase tracking-widest" data-i18n="availableBalance">Available Balance</p>
                 <h2 class="text-4xl font-bold">2,606 <span class="text-sm opacity-60" data-i18n="pts">pts</span></h2>
             </div>
-            <h3 class="font-bold text-slate-800 mb-4 text-xs uppercase tracking-widest" data-i18n="redeemRewards">Redeem Rewards</h3>
+            <h3 class="font-bold theme-text-primary text-slate-800 mb-4 text-xs uppercase tracking-widest" data-i18n="redeemRewards">Redeem Rewards</h3>
             <div class="horizontal-scroll" id="rewards-row"></div>
-            <h3 class="font-bold text-slate-800 mb-4 mt-8 text-xs uppercase tracking-widest" data-i18n="clinicLeaderboard">Clinic Leaderboard</h3>
+            <h3 class="font-bold theme-text-primary text-slate-800 mb-4 mt-8 text-xs uppercase tracking-widest" data-i18n="clinicLeaderboard">Clinic Leaderboard</h3>
             <div id="leaderboard-list" class="space-y-2"></div>
         </div>
     </div>
@@ -267,35 +287,43 @@
     <div id="profile-view" class="view p-6">
         <div class="text-center mb-8">
             <img src="https://ui-avatars.com/api/?name=Winnie+Law&background=0D8ABC&color=fff" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-lg">
-            <h2 class="text-xl font-bold">Dr. Winnie Law</h2>
+            <h2 class="text-xl font-bold theme-text-primary">Dr. Winnie Law</h2>
         </div>
         
         <div class="space-y-3">
             <!-- FAVOURITED EXERCISES BOX -->
-            <div class="border rounded-2xl overflow-hidden cursor-pointer">
+            <div class="theme-card border rounded-2xl overflow-hidden cursor-pointer">
                 <div onclick="toggleD('p-favs')" class="p-4 flex justify-between items-center text-xs font-bold">
                     <span data-i18n="favouritedExercises">Favourited Exercises</span>
-                    <i class="fas fa-chevron-down text-slate-300"></i>
+                    <i class="fas fa-chevron-down opacity-40"></i>
                 </div>
                 <div id="p-favs" class="exercise-detail">
                     <div class="p-4 pt-0">
-                        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800" data-i18n="favEx1">External Rotation</div>
-                        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs font-bold text-blue-800" data-i18n="favEx2">Band Pull-Apart</div>
+                        <div class="theme-card-sub p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800" data-i18n="favEx1">External Rotation</div>
+                        <div class="theme-card-sub p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs font-bold text-blue-800" data-i18n="favEx2">Band Pull-Apart</div>
                     </div>
                 </div>
             </div>
 
-            <!-- SETTINGS BOX -->
-            <div class="border rounded-2xl overflow-hidden cursor-pointer">
+            <!-- SETTINGS BOX (Includes Theme Switcher) -->
+            <div class="theme-card border rounded-2xl overflow-hidden cursor-pointer">
                 <div onclick="toggleD('p-settings')" class="p-4 flex justify-between items-center text-xs font-bold">
                     <span data-i18n="settings">Settings</span>
-                    <i class="fas fa-cog text-slate-400"></i>
+                    <i class="fas fa-cog opacity-40"></i>
                 </div>
                 <div id="p-settings" class="exercise-detail">
-                    <div class="p-4 pt-0">
-                        <div class="pt-3 border-t border-slate-100">
-                            <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2" data-i18n="languageSetting">Language / 언어 / 言語</label>
-                            <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500">
+                    <div class="p-4 pt-0 space-y-4">
+                        <div class="pt-3 border-t border-slate-100/20">
+                            <label class="block text-[9px] font-bold opacity-60 uppercase tracking-wider mb-2" data-i18n="themeSetting">Theme / 色彩模式</label>
+                            <select id="theme-select" onchange="changeTheme(this.value)" class="w-full theme-card-sub bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none">
+                                <option value="light">Light Mode (Default)</option>
+                                <option value="dark">Dark Mode</option>
+                                <option value="gradient">Gradient Mode</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold opacity-60 uppercase tracking-wider mb-2" data-i18n="languageSetting">Language / 언어 / 言語</label>
+                            <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full theme-card-sub bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none">
                                 <option value="en">English</option>
                                 <option value="zh">中文 (Chinese)</option>
                                 <option value="ko">한국어 (Korean)</option>
@@ -307,9 +335,9 @@
             </div>
 
             <!-- HELP CENTRE BOX -->
-            <div class="p-4 border rounded-2xl flex justify-between items-center text-xs font-bold cursor-pointer">
+            <div class="theme-card p-4 border rounded-2xl flex justify-between items-center text-xs font-bold cursor-pointer">
                 <span data-i18n="helpCentre">Help Centre</span>
-                <i class="fas fa-question-circle text-slate-300"></i>
+                <i class="fas fa-question-circle opacity-40"></i>
             </div>
         </div>
     </div>
@@ -382,6 +410,7 @@
             favEx1: "External Rotation",
             favEx2: "Band Pull-Apart",
             settings: "Settings",
+            themeSetting: "Theme / 色彩模式",
             languageSetting: "Language / 언어 / 言語",
             helpCentre: "Help Centre",
             navHome: "HOME",
@@ -431,6 +460,7 @@
             favEx1: "肩关节外旋",
             favEx2: "弹力带扩胸",
             settings: "设置",
+            themeSetting: "主题设置 / Theme",
             languageSetting: "语言 / Language",
             helpCentre: "帮助中心",
             navHome: "首页",
@@ -480,6 +510,7 @@
             favEx1: "외회전 운동",
             favEx2: "밴드 풀 어파트",
             settings: "설정",
+            themeSetting: "테마 설정 / Theme",
             languageSetting: "언어 / Language",
             helpCentre: "고객 센터",
             navHome: "홈",
@@ -529,6 +560,7 @@
             favEx1: "外旋運動",
             favEx2: "バンド・プルアパート",
             settings: "設定",
+            themeSetting: "テーマ設定 / Theme",
             languageSetting: "言語 / Language",
             helpCentre: "ヘルプセンター",
             navHome: "ホーム",
@@ -537,6 +569,16 @@
             navProfile: "マイページ"
         }
     };
+
+    function changeTheme(theme) {
+        document.body.classList.remove('theme-dark', 'theme-gradient');
+        if (theme === 'dark') {
+            document.body.classList.add('theme-dark');
+        } else if (theme === 'gradient') {
+            document.body.classList.add('theme-gradient');
+        }
+        document.getElementById('theme-select').value = theme;
+    }
 
     function changeLanguage(lang) {
         currentLang = lang;
@@ -587,7 +629,7 @@
     function switchLearnTab(tab) {
         document.querySelectorAll('.tab-btn').forEach(b => {
             b.classList.remove('active');
-            b.classList.add('text-slate-500');
+            b.classList.add('text-slate-400');
         });
         document.getElementById('sub-pain').classList.add('hidden');
         document.getElementById('sub-library').classList.add('hidden');
