@@ -10,7 +10,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow: hidden; }
         .app-container { max-width: 414px; margin: 0 auto; background: white; height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.1); }
-        .view { flex: 1; overflow-y: auto; padding-bottom: 140px; display: none; }
+        .view { flex: 1; overflow-y: auto; padding-bottom: 140px; display: none; position: relative; }
         .view.active { display: block; }
         .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: none; justify-content: space-between; align-items: center; background: white; padding: 0 24px 15px 24px; z-index: 50; box-sizing: border-box; }
         .scan-btn { width: 60px; height: 60px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-top: -35px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); border: 4px solid white; z-index: 60; flex-shrink: 0; }
@@ -25,6 +25,84 @@
         .reward-card { min-width: 160px; background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 12px; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #2563eb; border-radius: 50%; width: 16px; height: 16px; animation: spin 0.8s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* IMPRESSIVE PULL TO REFRESH STYLES */
+        .ptr-element {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 90px;
+            margin-top: -90px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .ptr-card {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 10px 20px;
+            border-radius: 9999px;
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.3), 0 0 20px rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .ptr-circle-wrapper {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ptr-glow-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            opacity: 0;
+            filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+        .ptr-circle-wrapper.loading .ptr-glow-ring {
+            opacity: 1;
+            animation: pulse-glow 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { transform: scale(0.95); opacity: 0.6; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+        .ptr-icon-box {
+            position: relative;
+            z-index: 1;
+            width: 44px;
+            height: 44px;
+            background: #1e293b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #60a5fa;
+            font-size: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .ptr-super-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #60a5fa;
+            border-right: 3px solid #a855f7;
+            border-radius: 50%;
+            animation: spin 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
     </style>
 </head>
 <body>
@@ -40,6 +118,23 @@
 
     <!-- HOME VIEW -->
     <div id="home-view" class="view active p-6 pb-36">
+        <!-- Upgraded Pull to Refresh Visual Header -->
+        <div id="ptr-indicator" class="ptr-element">
+            <div class="ptr-card" id="ptr-card">
+                <div class="ptr-circle-wrapper" id="ptr-wrapper">
+                    <div class="ptr-glow-ring"></div>
+                    <div class="ptr-icon-box" id="ptr-box">
+                        <i class="fas fa-arrow-down transition-transform duration-300" id="ptr-arrow"></i>
+                        <div class="ptr-super-spinner hidden" id="ptr-spinner"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span id="ptr-status-text" class="text-[11px] font-extrabold text-white tracking-wider uppercase">Pull to Refresh</span>
+                    <span id="ptr-sub-text" class="text-[9px] text-slate-400 font-semibold">Updating Ergonomic Metrics</span>
+                </div>
+            </div>
+        </div>
+
         <header class="flex justify-between items-center mb-6">
             <div>
                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">PRACTITIONER PROFILE</p>
@@ -331,6 +426,7 @@
         document.querySelector('.nav-bottom').style.display = 'flex';
         navigateTo('home-view');
         initData();
+        setupPullToRefresh();
     }
 
     function initData() {
@@ -391,6 +487,111 @@
             btn.className = "w-full py-2.5 bg-emerald-600 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5";
             btn.innerHTML = `<i class="fas fa-circle-check text-xs"></i> <span>Registered!</span>`;
         }, 1500);
+    }
+
+    /* HIGH-IMPACT PULL TO REFRESH IMPLEMENTATION */
+    function setupPullToRefresh() {
+        const homeView = document.getElementById('home-view');
+        const ptrIndicator = document.getElementById('ptr-indicator');
+        const ptrArrow = document.getElementById('ptr-arrow');
+        const ptrSpinner = document.getElementById('ptr-spinner');
+        const ptrStatusText = document.getElementById('ptr-status-text');
+        const ptrSubText = document.getElementById('ptr-sub-text');
+        const ptrWrapper = document.getElementById('ptr-wrapper');
+        const ptrBox = document.getElementById('ptr-box');
+
+        let startY = 0;
+        let pullDistance = 0;
+        let isPulling = false;
+        let isRefreshing = false;
+        const threshold = 110;
+
+        homeView.addEventListener('touchstart', (e) => {
+            if (homeView.scrollTop === 0 && !isRefreshing) {
+                startY = e.touches[0].pageY;
+                isPulling = true;
+            }
+        }, { passive: true });
+
+        homeView.addEventListener('touchmove', (e) => {
+            if (!isPulling || isRefreshing) return;
+            const currentY = e.touches[0].pageY;
+            pullDistance = currentY - startY;
+
+            if (pullDistance > 0 && homeView.scrollTop === 0) {
+                const progress = Math.min(pullDistance / threshold, 1);
+                const displayDistance = Math.min(pullDistance * 0.75, threshold + 15);
+                
+                ptrIndicator.style.opacity = progress;
+                ptrIndicator.style.transform = `translateY(${displayDistance}px)`;
+                
+                // Rotates arrow based on distance pulled
+                const rotation = Math.min(pullDistance * 2.2, 180);
+                ptrArrow.style.transform = `rotate(${rotation}deg)`;
+                
+                // Dynamic feedback on reach threshold
+                if (pullDistance >= threshold) {
+                    ptrStatusText.innerText = "Release to Sync";
+                    ptrStatusText.classList.add('text-blue-400');
+                    ptrBox.style.backgroundColor = '#2563eb';
+                    ptrBox.style.color = '#ffffff';
+                } else {
+                    ptrStatusText.innerText = "Pull to Refresh";
+                    ptrStatusText.classList.remove('text-blue-400');
+                    ptrBox.style.backgroundColor = '#1e293b';
+                    ptrBox.style.color = '#60a5fa';
+                }
+            }
+        }, { passive: true });
+
+        homeView.addEventListener('touchend', () => {
+            if (!isPulling || isRefreshing) return;
+            isPulling = false;
+
+            if (pullDistance >= threshold) {
+                isRefreshing = true;
+                ptrWrapper.classList.add('loading');
+                ptrArrow.classList.add('hidden');
+                ptrSpinner.classList.remove('hidden');
+                
+                ptrStatusText.innerText = "Syncing Data...";
+                ptrStatusText.classList.add('text-blue-400');
+                ptrSubText.innerText = "Loupes Sensor Connected";
+
+                ptrIndicator.style.transform = `translateY(${threshold}px)`;
+
+                // Dynamic dataset update simulation
+                setTimeout(() => {
+                    initData();
+                    
+                    ptrStatusText.innerText = "Updated!";
+                    ptrStatusText.classList.replace('text-blue-400', 'text-emerald-400');
+                    ptrSubText.innerText = "Latest posture sync complete";
+
+                    setTimeout(() => {
+                        ptrIndicator.style.transform = 'translateY(0px)';
+                        ptrIndicator.style.opacity = '0';
+
+                        setTimeout(() => {
+                            ptrWrapper.classList.remove('loading');
+                            ptrSpinner.classList.add('hidden');
+                            ptrArrow.classList.remove('hidden');
+                            ptrArrow.style.transform = 'rotate(0deg)';
+                            ptrStatusText.innerText = "Pull to Refresh";
+                            ptrStatusText.classList.remove('text-emerald-400');
+                            ptrSubText.innerText = "Updating Ergonomic Metrics";
+                            ptrBox.style.backgroundColor = '#1e293b';
+                            ptrBox.style.color = '#60a5fa';
+                            isRefreshing = false;
+                        }, 300);
+                    }, 600);
+                }, 1400);
+            } else {
+                ptrIndicator.style.transform = 'translateY(0px)';
+                ptrIndicator.style.opacity = '0';
+            }
+            pullDistance = 0;
+        });
     }
 
     function navigateTo(id) {
