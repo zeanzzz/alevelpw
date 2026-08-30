@@ -7,19 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow: hidden; }
         .app-container { max-width: 414px; margin: 0 auto; background: white; height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.1); }
         .view { flex: 1; overflow-y: auto; padding-bottom: 110px; display: none; }
         .view.active { display: block; }
-        .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: none; justify-content: space-around; align-items: center; background: white; padding-bottom: 15px; z-index: 50; }
-        .scan-btn { width: 65px; height: 65px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-top: -40px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); border: 4px solid white; z-index: 60; }
+        .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: none; justify-content: space-between; align-items: center; background: white; padding: 0 24px 15px 24px; z-index: 50; box-sizing: border-box; }
+        .scan-btn { width: 60px; height: 60px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-top: -35px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); border: 4px solid white; z-index: 60; flex-shrink: 0; }
         .exercise-detail { transition: all 0.3s ease; max-height: 0; overflow: hidden; opacity: 0; }
         .exercise-detail.open { max-height: 1000px; opacity: 1; margin-top: 12px; }
         .tab-btn.active { background: #1e293b; color: white; }
         .pain-node { position: absolute; width: 22px; height: 22px; background: rgba(239, 68, 68, 0.6); border-radius: 50%; border: 2px solid white; animation: pulse 2s infinite; cursor: pointer; z-index: 10; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 0.4; } 100% { transform: scale(1); opacity: 0.8; } }
-        .video-placeholder { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; items-center; justify-content: center; margin: 10px 0; position: relative; }
+        .video-placeholder { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 10px 0; position: relative; }
         .horizontal-scroll { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scrollbar-width: none; }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
         .reward-card { min-width: 160px; background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 12px; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
@@ -49,13 +49,15 @@
         <!-- WEEKLY ERGONOMIC DATA CARD -->
         <div class="bg-[#0f172a] rounded-3xl p-5 text-white mb-5 shadow-lg">
             <div class="flex justify-between items-center mb-4">
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">WEEKLY ERGONOMIC DATA</p>
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">WEEKLY ERGONOMIC DATA FROM ALPHA LOUPES</p>
                 <span class="bg-slate-800 text-slate-300 text-[9px] px-2.5 py-1 rounded-full font-medium">Total Procedure Time: <strong class="text-white">28h 15m</strong></span>
             </div>
 
-            <div class="flex justify-center items-center gap-4 text-[9px] font-semibold mb-4 text-slate-300">
-                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block"></span> Severe Bending</div>
+            <!-- CHART LEGEND KEY -->
+            <div class="flex justify-center items-center gap-3 text-[9px] font-semibold mb-4 text-slate-300">
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Minimal Bending</div>
                 <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> Mild Bending</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block"></span> Severe Bending</div>
             </div>
 
             <!-- STACKED BAR CHART -->
@@ -117,12 +119,6 @@
             </div>
         </div>
 
-        <!-- TOTAL ERGO-POINTS -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-5 text-white mb-4 shadow-md">
-            <p class="text-[9px] font-bold opacity-80 uppercase tracking-widest">TOTAL ERGO-POINTS</p>
-            <h3 class="text-3xl font-extrabold mt-1">+2,606 <span class="text-sm font-normal opacity-70">Points</span></h3>
-        </div>
-
         <!-- BENDING STATS GRID -->
         <div class="grid grid-cols-2 gap-3 mb-4">
             <!-- Severe Bending -->
@@ -160,7 +156,7 @@
         </div>
 
         <!-- POSTURE BREAKDOWN -->
-        <div class="bg-white border border-slate-100 rounded-3xl p-4 mb-4 shadow-sm">
+        <div class="bg-white border border-slate-100 rounded-3xl p-4 mb-6 shadow-sm">
             <h4 class="font-bold text-slate-800 text-xs mb-3">Posture Breakdown</h4>
             <div class="space-y-2.5 text-[10px] font-semibold">
                 <div class="flex items-center gap-2">
@@ -184,29 +180,12 @@
             </div>
         </div>
 
-        <!-- POINT GAIN CHART CARD -->
-        <div class="bg-white border border-slate-100 rounded-3xl p-4 mb-6 shadow-sm">
-            <h4 class="font-bold text-slate-800 text-[10px] uppercase tracking-wider mb-0.5">POINT GAIN FROM LOW BENDING</h4>
-            <p class="text-[9px] text-slate-400 mb-4">How the points gain gets closer to 0%</p>
-            
-            <div class="relative pl-7 pb-4">
-                <div class="absolute left-0 top-0 bottom-4 flex flex-col justify-between text-[8px] text-slate-400">
-                    <span>100%</span>
-                    <span>50%</span>
-                    <span>0%</span>
-                </div>
-                <div class="h-20 border-b border-slate-100 relative">
-                    <svg class="w-full h-full overflow-visible" viewBox="0 0 100 50" preserveAspectRatio="none">
-                        <path d="M 0 45 L 50 30 L 90 10" fill="none" stroke="#3b82f6" stroke-width="2.5" />
-                    </svg>
-                    <!-- Badges on line -->
-                    <div class="absolute left-[50%] top-[40%] transform -translate-x-1/2 bg-blue-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow">+5 Points</div>
-                    <div class="absolute right-[5%] top-[5%] bg-blue-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow">+50 Points</div>
-                </div>
-            </div>
+        <div class="bg-slate-900 rounded-3xl p-5 text-white mb-6">
+            <p class="text-[10px] opacity-60 uppercase font-bold tracking-widest">Today's Points</p>
+            <h3 class="text-2xl font-bold">+140 Points</h3>
+            <div class="w-full bg-white/20 h-1.5 rounded-full mt-3"><div class="bg-blue-400 h-full rounded-full" style="width: 70%"></div></div>
         </div>
 
-        <!-- QUICK CLINICAL STRETCHES & EXERCISES -->
         <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider">Quick Clinical Stretches</h3>
         <div class="grid grid-cols-2 gap-3 mb-6">
             <div onclick="navigateTo('scan-view')" class="p-4 bg-blue-50 border border-blue-100 rounded-2xl cursor-pointer">
@@ -318,11 +297,11 @@
 
     <!-- NAV BOTTOM -->
     <nav class="nav-bottom">
-        <button onclick="navigateTo('home-view')" id="n-home" class="flex flex-col items-center text-blue-600"><i class="fas fa-house"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">HOME</span></button>
-        <button onclick="navigateTo('learn-view')" id="n-learn" class="flex flex-col items-center text-slate-400"><i class="fas fa-book-open"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">LEARN</span></button>
+        <button onclick="navigateTo('home-view')" id="n-home" class="flex flex-col items-center justify-center w-12 text-blue-600"><i class="fas fa-house text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">HOME</span></button>
+        <button onclick="navigateTo('learn-view')" id="n-learn" class="flex flex-col items-center justify-center w-12 text-slate-400"><i class="fas fa-book-open text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">LEARN</span></button>
         <button onclick="navigateTo('scan-view')" class="scan-btn"><i class="fas fa-video text-2xl"></i></button>
-        <button onclick="navigateTo('rewards-view')" id="n-rewards" class="flex flex-col items-center text-slate-400"><i class="fas fa-trophy"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">REWARDS</span></button>
-        <button onclick="navigateTo('profile-view')" id="n-profile" class="flex flex-col items-center text-slate-400"><i class="fas fa-user-circle"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">PROFILE</span></button>
+        <button onclick="navigateTo('rewards-view')" id="n-rewards" class="flex flex-col items-center justify-center w-12 text-slate-400"><i class="fas fa-trophy text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">REWARDS</span></button>
+        <button onclick="navigateTo('profile-view')" id="n-profile" class="flex flex-col items-center justify-center w-12 text-slate-400"><i class="fas fa-user-circle text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">PROFILE</span></button>
     </nav>
 </div>
 
