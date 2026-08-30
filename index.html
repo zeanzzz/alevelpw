@@ -39,16 +39,174 @@
     <!-- HOME VIEW -->
     <div id="home-view" class="view active p-6">
         <header class="flex justify-between items-center mb-6">
-            <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Practitioner Profile</p><h2 class="text-xl font-bold text-slate-800">Dr. Winnie Law</h2></div>
-            <img src="https://ui-avatars.com/api/?name=Winnie+Law&background=0D8ABC&color=fff" class="w-10 h-10 rounded-full border-2 border-blue-500">
+            <div>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">PRACTITIONER PROFILE</p>
+                <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Dr. Winnie Law</h2>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-blue-500 text-white font-semibold flex items-center justify-center text-sm border-2 border-white shadow-sm">WL</div>
         </header>
 
-        <div class="bg-slate-900 rounded-3xl p-5 text-white mb-6">
-            <p class="text-[10px] opacity-60 uppercase font-bold tracking-widest">Today's Points</p>
-            <h3 class="text-2xl font-bold">+140 Points</h3>
-            <div class="w-full bg-white/20 h-1.5 rounded-full mt-3"><div class="bg-blue-400 h-full rounded-full" style="width: 70%"></div></div>
+        <!-- WEEKLY ERGONOMIC DATA CARD -->
+        <div class="bg-[#0f172a] rounded-3xl p-5 text-white mb-5 shadow-lg">
+            <div class="flex justify-between items-center mb-4">
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">WEEKLY ERGONOMIC DATA</p>
+                <span class="bg-slate-800 text-slate-300 text-[9px] px-2.5 py-1 rounded-full font-medium">Total Procedure Time: <strong class="text-white">28h 15m</strong></span>
+            </div>
+
+            <div class="flex justify-center items-center gap-4 text-[9px] font-semibold mb-4 text-slate-300">
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block"></span> Severe Bending</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> Mild Bending</div>
+            </div>
+
+            <!-- STACKED BAR CHART -->
+            <div class="relative pl-7 pb-5">
+                <div class="absolute left-0 top-0 bottom-5 flex flex-col justify-between text-[8px] text-slate-400 font-semibold">
+                    <span>100%</span>
+                    <span>75%</span>
+                    <span>50%</span>
+                    <span>25%</span>
+                    <span>0%</span>
+                </div>
+                <div class="grid grid-cols-7 gap-2.5 items-end h-32 border-b border-slate-700/60 pb-1">
+                    <!-- Mon -->
+                    <div class="flex flex-col h-full justify-end group">
+                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div>
+                        <div class="w-full bg-amber-500" style="height: 15%"></div>
+                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div>
+                    </div>
+                    <!-- Tue -->
+                    <div class="flex flex-col h-full justify-end group">
+                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 8%"></div>
+                        <div class="w-full bg-amber-500" style="height: 17%"></div>
+                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div>
+                    </div>
+                    <!-- Wed -->
+                    <div class="flex flex-col h-full justify-end group">
+                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 12%"></div>
+                        <div class="w-full bg-amber-500" style="height: 22%"></div>
+                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 66%"></div>
+                    </div>
+                    <!-- Thu -->
+                    <div class="flex flex-col h-full justify-end group">
+                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 7%"></div>
+                        <div class="w-full bg-amber-500" style="height: 23%"></div>
+                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 70%"></div>
+                    </div>
+                    <!-- Fri -->
+                    <div class="flex flex-col h-full justify-end group">
+                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div>
+                        <div class="w-full bg-amber-500" style="height: 25%"></div>
+                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div>
+                    </div>
+                    <!-- Sat -->
+                    <div class="flex flex-col h-full justify-end group">
+                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 14%"></div>
+                        <div class="w-full bg-amber-500" style="height: 19%"></div>
+                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 67%"></div>
+                    </div>
+                    <!-- Sun -->
+                    <div class="flex flex-col h-full justify-end group">
+                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 11%"></div>
+                        <div class="w-full bg-amber-500" style="height: 24%"></div>
+                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-7 gap-2.5 text-center text-[9px] text-slate-400 pt-1 font-medium">
+                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                </div>
+            </div>
         </div>
 
+        <!-- TOTAL ERGO-POINTS -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-5 text-white mb-4 shadow-md">
+            <p class="text-[9px] font-bold opacity-80 uppercase tracking-widest">TOTAL ERGO-POINTS</p>
+            <h3 class="text-3xl font-extrabold mt-1">+2,606 <span class="text-sm font-normal opacity-70">Points</span></h3>
+        </div>
+
+        <!-- BENDING STATS GRID -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <!-- Severe Bending -->
+            <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4 relative overflow-hidden">
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2">Weekly Severe Bending %</p>
+                <div class="flex items-baseline justify-between">
+                    <span class="text-3xl font-extrabold text-slate-900">8%</span>
+                    <div class="flex items-center text-emerald-600 font-bold text-xs gap-1">
+                        <i class="fas fa-arrow-down text-lg"></i>
+                        <div class="leading-tight text-[9px]">
+                            <div>Improvement</div>
+                            <div class="text-emerald-700 font-extrabold">-3%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 text-right">
+                    <span class="bg-emerald-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full">+50 Pts</span>
+                </div>
+            </div>
+
+            <!-- Mild Bending -->
+            <div class="bg-amber-50/50 border border-amber-100 rounded-2xl p-4">
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2">Weekly Mild Bending %</p>
+                <div class="flex items-baseline justify-between">
+                    <span class="text-3xl font-extrabold text-slate-900">22%</span>
+                    <div class="flex items-center text-amber-600 font-bold text-xs gap-1">
+                        <i class="fas fa-arrow-up text-lg"></i>
+                        <div class="leading-tight text-[9px]">
+                            <div>Worsening</div>
+                            <div class="text-amber-700 font-extrabold">+2%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POSTURE BREAKDOWN -->
+        <div class="bg-white border border-slate-100 rounded-3xl p-4 mb-4 shadow-sm">
+            <h4 class="font-bold text-slate-800 text-xs mb-3">Posture Breakdown</h4>
+            <div class="space-y-2.5 text-[10px] font-semibold">
+                <div class="flex items-center gap-2">
+                    <span class="w-24 text-slate-600">Neutral: <strong class="text-slate-800">70%</strong></span>
+                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full rounded-full" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-24 text-slate-600">Mild Bend: <strong class="text-slate-800">22%</strong></span>
+                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-amber-500 h-full rounded-full" style="width: 22%"></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-24 text-slate-600">Severe Bend: <strong class="text-slate-800">8%</strong></span>
+                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-red-500 h-full rounded-full" style="width: 8%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POINT GAIN CHART CARD -->
+        <div class="bg-white border border-slate-100 rounded-3xl p-4 mb-6 shadow-sm">
+            <h4 class="font-bold text-slate-800 text-[10px] uppercase tracking-wider mb-0.5">POINT GAIN FROM LOW BENDING</h4>
+            <p class="text-[9px] text-slate-400 mb-4">How the points gain gets closer to 0%</p>
+            
+            <div class="relative pl-7 pb-4">
+                <div class="absolute left-0 top-0 bottom-4 flex flex-col justify-between text-[8px] text-slate-400">
+                    <span>100%</span>
+                    <span>50%</span>
+                    <span>0%</span>
+                </div>
+                <div class="h-20 border-b border-slate-100 relative">
+                    <svg class="w-full h-full overflow-visible" viewBox="0 0 100 50" preserveAspectRatio="none">
+                        <path d="M 0 45 L 50 30 L 90 10" fill="none" stroke="#3b82f6" stroke-width="2.5" />
+                    </svg>
+                    <!-- Badges on line -->
+                    <div class="absolute left-[50%] top-[40%] transform -translate-x-1/2 bg-blue-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow">+5 Points</div>
+                    <div class="absolute right-[5%] top-[5%] bg-blue-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow">+50 Points</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK CLINICAL STRETCHES & EXERCISES -->
         <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider">Quick Clinical Stretches</h3>
         <div class="grid grid-cols-2 gap-3 mb-6">
             <div onclick="navigateTo('scan-view')" class="p-4 bg-blue-50 border border-blue-100 rounded-2xl cursor-pointer">
@@ -90,7 +248,7 @@
             <div id="sub-pain">
                 <div class="relative bg-slate-50 rounded-3xl h-[380px] border border-slate-200 flex items-center justify-center overflow-hidden">
                     <i class="fas fa-person text-[320px] text-slate-200"></i>
-                    <!-- New Nodes -->
+                    <!-- Nodes -->
                     <div onclick="openDiagnosis('Cervical Spine', 'Targeting scalene and upper trap tension.')" class="pain-node" style="top:12%; left:47%;"></div>
                     <div onclick="openDiagnosis('Upper Traps', 'Release shrugging tension from instrumentation.')" class="pain-node" style="top:18%; left:38%;"></div>
                     <div onclick="openDiagnosis('Forearm Flexors', 'Counteract tool gripping fatigue.')" class="pain-node" style="top:38%; left:28%;"></div>
