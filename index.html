@@ -14,95 +14,26 @@
         .view.active { display: block; }
         .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: none; justify-content: space-between; align-items: center; background: white; padding: 0 24px 15px 24px; z-index: 50; box-sizing: border-box; }
         .scan-btn { width: 60px; height: 60px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-top: -35px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); border: 4px solid white; z-index: 60; flex-shrink: 0; }
+        
+        /* Smooth Collapsible Animations */
         .exercise-detail { transition: all 0.3s ease; max-height: 0; overflow: hidden; opacity: 0; }
-        .exercise-detail.open { max-height: 1000px; opacity: 1; margin-top: 12px; }
+        .exercise-detail.open { max-height: 1000px; opacity: 1; }
+
         .tab-btn.active { background: #1e293b; color: white; }
         .pain-node { position: absolute; width: 22px; height: 22px; background: rgba(239, 68, 68, 0.6); border-radius: 50%; border: 2px solid white; animation: pulse 2s infinite; cursor: pointer; z-index: 10; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 0.4; } 100% { transform: scale(1); opacity: 0.8; } }
         .video-placeholder { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 10px 0; position: relative; }
         .horizontal-scroll { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scrollbar-width: none; }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
-        .reward-card { min-width: 160px; background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 12px; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #2563eb; border-radius: 50%; width: 16px; height: 16px; animation: spin 0.8s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* IMPRESSIVE PULL TO REFRESH STYLES */
-        .ptr-element {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 90px;
-            margin-top: -90px;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
-            z-index: 40;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .ptr-card {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(12px);
-            padding: 10px 20px;
-            border-radius: 9999px;
-            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.3), 0 0 20px rgba(37, 99, 235, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .ptr-circle-wrapper {
-            position: relative;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .ptr-glow-ring {
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-            opacity: 0;
-            filter: blur(8px);
-            transition: opacity 0.3s ease;
-        }
-        .ptr-circle-wrapper.loading .ptr-glow-ring {
-            opacity: 1;
-            animation: pulse-glow 1.5s ease-in-out infinite alternate;
-        }
-        @keyframes pulse-glow {
-            0% { transform: scale(0.95); opacity: 0.6; }
-            100% { transform: scale(1.2); opacity: 1; }
-        }
-        .ptr-icon-box {
-            position: relative;
-            z-index: 1;
-            width: 44px;
-            height: 44px;
-            background: #1e293b;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #60a5fa;
-            font-size: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        .ptr-super-spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #60a5fa;
-            border-right: 3px solid #a855f7;
-            border-radius: 50%;
-            animation: spin 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-        }
+        /* PULL TO REFRESH STYLES */
+        .ptr-element { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; height: 90px; margin-top: -90px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease; z-index: 40; opacity: 0; pointer-events: none; }
+        .ptr-card { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); padding: 10px 20px; border-radius: 9999px; box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.3), 0 0 20px rgba(37, 99, 235, 0.2); border: 1px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; gap: 12px; }
+        .ptr-circle-wrapper { position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+        .ptr-glow-ring { position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899); opacity: 0; filter: blur(8px); transition: opacity 0.3s ease; }
+        .ptr-icon-box { position: relative; z-index: 1; width: 44px; height: 44px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 18px; border: 2px solid rgba(255, 255, 255, 0.1); }
+        .ptr-super-spinner { width: 24px; height: 24px; border: 3px solid rgba(255, 255, 255, 0.1); border-top: 3px solid #60a5fa; border-right: 3px solid #a855f7; border-radius: 50%; animation: spin 0.7s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -113,31 +44,30 @@
     <div id="login-screen" class="absolute inset-0 z-[100] bg-white flex flex-col items-center justify-center p-10 text-center">
         <div class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold">12</div>
         <h1 class="text-2xl font-bold text-slate-800">12 O’Clock</h1>
-        <button onclick="performLogin()" class="w-full bg-red-600 text-white py-4 rounded-xl font-bold mt-10 shadow-lg">singpass Login</button>
+        <button onclick="performLogin()" class="w-full bg-red-600 text-white py-4 rounded-xl font-bold mt-10 shadow-lg" data-i18n="singpassLogin">Singpass Login</button>
     </div>
 
     <!-- HOME VIEW -->
     <div id="home-view" class="view active p-6 pb-36">
-        <!-- Upgraded Pull to Refresh Visual Header -->
         <div id="ptr-indicator" class="ptr-element">
             <div class="ptr-card" id="ptr-card">
                 <div class="ptr-circle-wrapper" id="ptr-wrapper">
                     <div class="ptr-glow-ring"></div>
                     <div class="ptr-icon-box" id="ptr-box">
-                        <i class="fas fa-arrow-down transition-transform duration-300" id="ptr-arrow"></i>
+                        <i class="fas fa-arrow-down" id="ptr-arrow"></i>
                         <div class="ptr-super-spinner hidden" id="ptr-spinner"></div>
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <span id="ptr-status-text" class="text-[11px] font-extrabold text-white tracking-wider uppercase">Pull to Refresh</span>
-                    <span id="ptr-sub-text" class="text-[9px] text-slate-400 font-semibold">Updating Ergonomic Metrics</span>
+                    <span id="ptr-status-text" class="text-[11px] font-extrabold text-white uppercase" data-i18n="ptrPull">Pull to Refresh</span>
+                    <span id="ptr-sub-text" class="text-[9px] text-slate-400 font-semibold" data-i18n="ptrSub">Updating Ergonomic Metrics</span>
                 </div>
             </div>
         </div>
 
         <header class="flex justify-between items-center mb-6">
             <div>
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">PRACTITIONER PROFILE</p>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest" data-i18n="practitionerProfile">PRACTITIONER PROFILE</p>
                 <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Dr. Winnie Law</h2>
             </div>
             <div class="w-10 h-10 rounded-full bg-blue-500 text-white font-semibold flex items-center justify-center text-sm border-2 border-white shadow-sm">WL</div>
@@ -146,18 +76,16 @@
         <!-- WEEKLY ERGONOMIC DATA CARD -->
         <div class="bg-[#0f172a] rounded-3xl p-5 text-white mb-5 shadow-lg">
             <div class="flex justify-between items-center mb-4">
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">WEEKLY ERGONOMIC DATA FROM ALPHA LOUPES</p>
-                <span class="bg-slate-800 text-slate-300 text-[9px] px-2.5 py-1 rounded-full font-medium">Total Procedure Time: <strong class="text-white">28h 15m</strong></span>
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest" data-i18n="weeklyDataTitle">WEEKLY ERGONOMIC DATA FROM ALPHA LOUPES</p>
+                <span class="bg-slate-800 text-slate-300 text-[9px] px-2.5 py-1 rounded-full font-medium"><span data-i18n="totalProcedureTime">Total Procedure Time</span>: <strong class="text-white">28h 15m</strong></span>
             </div>
 
-            <!-- CHART LEGEND KEY -->
             <div class="flex justify-center items-center gap-3 text-[9px] font-semibold mb-4 text-slate-300">
-                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Minimal Bending</div>
-                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> Mild Bending</div>
-                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block"></span> Severe Bending</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> <span data-i18n="minimalBending">Minimal Bending</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> <span data-i18n="mildBending">Mild Bending</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block"></span> <span data-i18n="severeBending">Severe Bending</span></div>
             </div>
 
-            <!-- STACKED BAR CHART -->
             <div class="relative pl-7 pb-5">
                 <div class="absolute left-0 top-0 bottom-5 flex flex-col justify-between text-[8px] text-slate-400 font-semibold">
                     <span>100%</span>
@@ -167,44 +95,16 @@
                     <span>0%</span>
                 </div>
                 <div class="grid grid-cols-7 gap-2.5 items-end h-32 border-b border-slate-700/60 pb-1">
-                    <div class="flex flex-col h-full justify-end group">
-                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div>
-                        <div class="w-full bg-amber-500" style="height: 15%"></div>
-                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div>
-                    </div>
-                    <div class="flex flex-col h-full justify-end group">
-                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 8%"></div>
-                        <div class="w-full bg-amber-500" style="height: 17%"></div>
-                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div>
-                    </div>
-                    <div class="flex flex-col h-full justify-end group">
-                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 12%"></div>
-                        <div class="w-full bg-amber-500" style="height: 22%"></div>
-                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 66%"></div>
-                    </div>
-                    <div class="flex flex-col h-full justify-end group">
-                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 7%"></div>
-                        <div class="w-full bg-amber-500" style="height: 23%"></div>
-                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 70%"></div>
-                    </div>
-                    <div class="flex flex-col h-full justify-end group">
-                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div>
-                        <div class="w-full bg-amber-500" style="height: 25%"></div>
-                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div>
-                    </div>
-                    <div class="flex flex-col h-full justify-end group">
-                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 14%"></div>
-                        <div class="w-full bg-amber-500" style="height: 19%"></div>
-                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 67%"></div>
-                    </div>
-                    <div class="flex flex-col h-full justify-end group">
-                        <div class="w-full bg-red-500 rounded-t-sm" style="height: 11%"></div>
-                        <div class="w-full bg-amber-500" style="height: 24%"></div>
-                        <div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div>
-                    </div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div><div class="w-full bg-amber-500" style="height: 15%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 8%"></div><div class="w-full bg-amber-500" style="height: 17%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 12%"></div><div class="w-full bg-amber-500" style="height: 22%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 66%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 7%"></div><div class="w-full bg-amber-500" style="height: 23%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 70%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div><div class="w-full bg-amber-500" style="height: 25%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 14%"></div><div class="w-full bg-amber-500" style="height: 19%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 67%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 11%"></div><div class="w-full bg-amber-500" style="height: 24%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div></div>
                 </div>
                 <div class="grid grid-cols-7 gap-2.5 text-center text-[9px] text-slate-400 pt-1 font-medium">
-                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                    <span data-i18n="mon">Mon</span><span data-i18n="tue">Tue</span><span data-i18n="wed">Wed</span><span data-i18n="thu">Thu</span><span data-i18n="fri">Fri</span><span data-i18n="sat">Sat</span><span data-i18n="sun">Sun</span>
                 </div>
             </div>
         </div>
@@ -212,13 +112,13 @@
         <!-- BENDING STATS GRID -->
         <div class="grid grid-cols-2 gap-3 mb-4">
             <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4 relative overflow-hidden">
-                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2">Weekly Severe Bending %</p>
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2" data-i18n="weeklySevereBending">Weekly Severe Bending %</p>
                 <div class="flex items-baseline justify-between">
                     <span class="text-3xl font-extrabold text-slate-900">8%</span>
                     <div class="flex items-center text-emerald-600 font-bold text-xs gap-1">
                         <i class="fas fa-arrow-down text-lg"></i>
                         <div class="leading-tight text-[9px]">
-                            <div>Improvement</div>
+                            <div data-i18n="improvement">Improvement</div>
                             <div class="text-emerald-700 font-extrabold">-3%</div>
                         </div>
                     </div>
@@ -229,13 +129,13 @@
             </div>
 
             <div class="bg-amber-50/50 border border-amber-100 rounded-2xl p-4">
-                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2">Weekly Mild Bending %</p>
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2" data-i18n="weeklyMildBending">Weekly Mild Bending %</p>
                 <div class="flex items-baseline justify-between">
                     <span class="text-3xl font-extrabold text-slate-900">22%</span>
                     <div class="flex items-center text-amber-600 font-bold text-xs gap-1">
                         <i class="fas fa-arrow-up text-lg"></i>
                         <div class="leading-tight text-[9px]">
-                            <div>Worsening</div>
+                            <div data-i18n="worsening">Worsening</div>
                             <div class="text-amber-700 font-extrabold">+2%</div>
                         </div>
                     </div>
@@ -245,22 +145,22 @@
 
         <!-- POSTURE BREAKDOWN -->
         <div class="bg-white border border-slate-100 rounded-3xl p-4 mb-6 shadow-sm">
-            <h4 class="font-bold text-slate-800 text-xs mb-3">Posture Breakdown</h4>
+            <h4 class="font-bold text-slate-800 text-xs mb-3" data-i18n="postureBreakdown">Posture Breakdown</h4>
             <div class="space-y-2.5 text-[10px] font-semibold">
                 <div class="flex items-center gap-2">
-                    <span class="w-24 text-slate-600">Neutral: <strong class="text-slate-800">70%</strong></span>
+                    <span class="w-24 text-slate-600"><span data-i18n="neutral">Neutral</span>: <strong class="text-slate-800">70%</strong></span>
                     <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-emerald-500 h-full rounded-full" style="width: 70%"></div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="w-24 text-slate-600">Mild Bend: <strong class="text-slate-800">22%</strong></span>
+                    <span class="w-24 text-slate-600"><span data-i18n="mildBend">Mild Bend</span>: <strong class="text-slate-800">22%</strong></span>
                     <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-amber-500 h-full rounded-full" style="width: 22%"></div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="w-24 text-slate-600">Severe Bend: <strong class="text-slate-800">8%</strong></span>
+                    <span class="w-24 text-slate-600"><span data-i18n="severeBend">Severe Bend</span>: <strong class="text-slate-800">8%</strong></span>
                     <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-red-500 h-full rounded-full" style="width: 8%"></div>
                     </div>
@@ -269,35 +169,35 @@
         </div>
 
         <div class="bg-slate-900 rounded-3xl p-5 text-white mb-6">
-            <p class="text-[10px] opacity-60 uppercase font-bold tracking-widest">Today's Points</p>
-            <h3 class="text-2xl font-bold">+140 Points</h3>
+            <p class="text-[10px] opacity-60 uppercase font-bold tracking-widest" data-i18n="todaysPoints">Today's Points</p>
+            <h3 class="text-2xl font-bold">+140 <span data-i18n="points">Points</span></h3>
             <div class="w-full bg-white/20 h-1.5 rounded-full mt-3"><div class="bg-blue-400 h-full rounded-full" style="width: 70%"></div></div>
         </div>
 
-        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider">Quick Clinical Stretches</h3>
+        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider" data-i18n="quickStretches">Quick Clinical Stretches</h3>
         <div class="grid grid-cols-2 gap-3 mb-6">
             <div onclick="navigateTo('scan-view')" class="p-4 bg-blue-50 border border-blue-100 rounded-2xl cursor-pointer">
                 <i class="fas fa-arrows-up-down text-blue-600 mb-2"></i>
-                <p class="font-bold text-xs">Cervical</p>
+                <p class="font-bold text-xs" data-i18n="cervical">Cervical</p>
                 <p class="text-[9px] text-blue-600 font-bold">15 PTS</p>
             </div>
             <div onclick="navigateTo('scan-view')" class="p-4 bg-orange-50 border border-orange-100 rounded-2xl cursor-pointer">
                 <i class="fas fa-hand-sparkles text-orange-600 mb-2"></i>
-                <p class="font-bold text-xs">Wrist Release</p>
+                <p class="font-bold text-xs" data-i18n="wristRelease">Wrist Release</p>
                 <p class="text-[9px] text-orange-600 font-bold">15 PTS</p>
             </div>
         </div>
 
-        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider">Quick Clinical Exercises</h3>
+        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider" data-i18n="quickExercises">Quick Clinical Exercises</h3>
         <div class="grid grid-cols-2 gap-3">
             <div onclick="navigateTo('scan-view')" class="p-4 bg-green-50 border border-green-100 rounded-2xl cursor-pointer">
                 <i class="fas fa-child-reaching text-green-600 mb-2"></i>
-                <p class="font-bold text-xs">Chin Tucks</p>
+                <p class="font-bold text-xs" data-i18n="chinTucks">Chin Tucks</p>
                 <p class="text-[9px] text-green-700 font-bold">10 PTS</p>
             </div>
             <div onclick="navigateTo('scan-view')" class="p-4 bg-purple-50 border border-purple-100 rounded-2xl cursor-pointer">
                 <i class="fas fa-person-praying text-purple-600 mb-2"></i>
-                <p class="font-bold text-xs">Prayer Stretch</p>
+                <p class="font-bold text-xs" data-i18n="prayerStretch">Prayer Stretch</p>
                 <p class="text-[9px] text-purple-700 font-bold">10 PTS</p>
             </div>
         </div>
@@ -307,9 +207,9 @@
     <div id="learn-view" class="view">
         <div class="p-6">
             <div class="flex space-x-2 mb-6 bg-slate-100 p-1 rounded-xl">
-                <button onclick="switchLearnTab('pain')" id="tab-pain" class="tab-btn active flex-1 py-2 rounded-lg text-[9px] font-bold">ANATOMIC MAP</button>
-                <button onclick="switchLearnTab('library')" id="tab-library" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold">LIBRARY</button>
-                <button onclick="switchLearnTab('events')" id="tab-events" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold">EVENTS</button>
+                <button onclick="switchLearnTab('pain')" id="tab-pain" class="tab-btn active flex-1 py-2 rounded-lg text-[9px] font-bold" data-i18n="tabAnatomicMap">ANATOMIC MAP</button>
+                <button onclick="switchLearnTab('library')" id="tab-library" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold" data-i18n="tabLibrary">LIBRARY</button>
+                <button onclick="switchLearnTab('events')" id="tab-events" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold" data-i18n="tabEvents">EVENTS</button>
             </div>
             
             <div id="sub-pain">
@@ -325,7 +225,7 @@
                     <h4 id="diag-title" class="font-bold text-blue-400 text-sm"></h4>
                     <div class="video-placeholder"><i class="fas fa-play text-white/20 text-3xl"></i></div>
                     <p id="diag-desc" class="text-[10px] text-slate-400 mb-4"></p>
-                    <button onclick="navigateTo('scan-view')" class="w-full bg-blue-600 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest">Track with AI</button>
+                    <button onclick="navigateTo('scan-view')" class="w-full bg-blue-600 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest" data-i18n="trackWithAi">Track with AI</button>
                 </div>
             </div>
 
@@ -338,12 +238,12 @@
     <div id="rewards-view" class="view">
         <div class="p-6">
             <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 text-white mb-8 shadow-lg">
-                <p class="text-[10px] font-bold opacity-80 uppercase tracking-widest">Available Balance</p>
-                <h2 class="text-4xl font-bold">2,606 <span class="text-sm opacity-60">pts</span></h2>
+                <p class="text-[10px] font-bold opacity-80 uppercase tracking-widest" data-i18n="availableBalance">Available Balance</p>
+                <h2 class="text-4xl font-bold">2,606 <span class="text-sm opacity-60" data-i18n="pts">pts</span></h2>
             </div>
-            <h3 class="font-bold text-slate-800 mb-4 text-xs uppercase tracking-widest">Redeem Rewards</h3>
+            <h3 class="font-bold text-slate-800 mb-4 text-xs uppercase tracking-widest" data-i18n="redeemRewards">Redeem Rewards</h3>
             <div class="horizontal-scroll" id="rewards-row"></div>
-            <h3 class="font-bold text-slate-800 mb-4 mt-8 text-xs uppercase tracking-widest">Clinic Leaderboard</h3>
+            <h3 class="font-bold text-slate-800 mb-4 mt-8 text-xs uppercase tracking-widest" data-i18n="clinicLeaderboard">Clinic Leaderboard</h3>
             <div id="leaderboard-list" class="space-y-2"></div>
         </div>
     </div>
@@ -352,12 +252,14 @@
     <div id="scan-view" class="view bg-slate-950">
         <div class="h-full flex flex-col items-center justify-between p-10 relative">
             <button onclick="navigateTo('home-view')" class="absolute top-10 right-6 text-white text-2xl p-2 z-[70]"><i class="fas fa-times"></i></button>
-            <div class="mt-12 text-center"><p class="text-green-400 animate-pulse text-[10px] font-bold uppercase tracking-widest mb-1">AI Performance Tracker</p><h3 class="text-white font-bold text-lg">Validating Movements...</h3></div>
+            <div class="mt-12 text-center">
+                <p class="text-green-400 animate-pulse text-[10px] font-bold uppercase tracking-widest mb-1" data-i18n="aiTrackerTitle">AI Performance Tracker</p>
+                <h3 class="text-white font-bold text-lg" data-i18n="validatingMovements">Validating Movements...</h3>
+            </div>
             <div class="w-full h-3/5 border-2 border-dashed border-green-500/30 rounded-[40px] relative overflow-hidden bg-black">
-                <div class="scan-line" style="background: #22c55e; box-shadow: 0 0 15px #22c55e;"></div>
                 <div class="absolute inset-0 flex items-center justify-center opacity-20"><i class="fas fa-user-check text-white text-[120px]"></i></div>
             </div>
-            <button class="px-8 py-3 bg-green-600 text-white rounded-full text-xs font-bold">RECORDING SESSION</button>
+            <button class="px-8 py-3 bg-green-600 text-white rounded-full text-xs font-bold uppercase tracking-wider" data-i18n="recordingSession">RECORDING SESSION</button>
         </div>
     </div>
 
@@ -367,258 +269,347 @@
             <img src="https://ui-avatars.com/api/?name=Winnie+Law&background=0D8ABC&color=fff" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-lg">
             <h2 class="text-xl font-bold">Dr. Winnie Law</h2>
         </div>
-        <section class="mb-4">
-            <div onclick="toggleD('p-favs')" class="flex justify-between items-center p-4 border rounded-2xl cursor-pointer">
-                <span class="text-xs font-bold uppercase tracking-wider">Favourited Exercises</span><i class="fas fa-chevron-down text-slate-300"></i>
-            </div>
-            <div id="p-favs" class="exercise-detail">
-                <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800">External Rotation</div>
-                <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800">Band Pull-Apart</div>
-            </div>
-        </section>
+        
         <div class="space-y-3">
-            <div class="p-4 border rounded-2xl flex justify-between items-center text-xs font-bold"><span>Settings</span><i class="fas fa-cog opacity-20"></i></div>
-            <div class="p-4 border rounded-2xl flex justify-between items-center text-xs font-bold"><span>Help Centre</span><i class="fas fa-question-circle opacity-20"></i></div>
+            <!-- FAVOURITED EXERCISES BOX -->
+            <div class="border rounded-2xl overflow-hidden cursor-pointer">
+                <div onclick="toggleD('p-favs')" class="p-4 flex justify-between items-center text-xs font-bold">
+                    <span data-i18n="favouritedExercises">Favourited Exercises</span>
+                    <i class="fas fa-chevron-down text-slate-300"></i>
+                </div>
+                <div id="p-favs" class="exercise-detail">
+                    <div class="p-4 pt-0">
+                        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800" data-i18n="favEx1">External Rotation</div>
+                        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs font-bold text-blue-800" data-i18n="favEx2">Band Pull-Apart</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS BOX -->
+            <div class="border rounded-2xl overflow-hidden cursor-pointer">
+                <div onclick="toggleD('p-settings')" class="p-4 flex justify-between items-center text-xs font-bold">
+                    <span data-i18n="settings">Settings</span>
+                    <i class="fas fa-cog text-slate-400"></i>
+                </div>
+                <div id="p-settings" class="exercise-detail">
+                    <div class="p-4 pt-0">
+                        <div class="pt-3 border-t border-slate-100">
+                            <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2" data-i18n="languageSetting">Language / 언어 / 言語</label>
+                            <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500">
+                                <option value="en">English</option>
+                                <option value="zh">中文 (Chinese)</option>
+                                <option value="ko">한국어 (Korean)</option>
+                                <option value="ja">日本語 (Japanese)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HELP CENTRE BOX -->
+            <div class="p-4 border rounded-2xl flex justify-between items-center text-xs font-bold cursor-pointer">
+                <span data-i18n="helpCentre">Help Centre</span>
+                <i class="fas fa-question-circle text-slate-300"></i>
+            </div>
         </div>
     </div>
 
     <!-- NAV BOTTOM -->
     <nav class="nav-bottom">
-        <button onclick="navigateTo('home-view')" id="n-home" class="flex flex-col items-center justify-center w-12 text-blue-600"><i class="fas fa-house text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">HOME</span></button>
-        <button onclick="navigateTo('learn-view')" id="n-learn" class="flex flex-col items-center justify-center w-12 text-slate-400"><i class="fas fa-book-open text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">LEARN</span></button>
+        <button onclick="navigateTo('home-view')" id="n-home" class="flex flex-col items-center justify-center w-12 text-blue-600">
+            <i class="fas fa-house text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navHome">HOME</span>
+        </button>
+        <button onclick="navigateTo('learn-view')" id="n-learn" class="flex flex-col items-center justify-center w-12 text-slate-400">
+            <i class="fas fa-book-open text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navLearn">LEARN</span>
+        </button>
         <button onclick="navigateTo('scan-view')" class="scan-btn"><i class="fas fa-video text-2xl"></i></button>
-        <button onclick="navigateTo('rewards-view')" id="n-rewards" class="flex flex-col items-center justify-center w-12 text-slate-400"><i class="fas fa-trophy text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">REWARDS</span></button>
-        <button onclick="navigateTo('profile-view')" id="n-profile" class="flex flex-col items-center justify-center w-12 text-slate-400"><i class="fas fa-user-circle text-lg"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">PROFILE</span></button>
+        <button onclick="navigateTo('rewards-view')" id="n-rewards" class="flex flex-col items-center justify-center w-12 text-slate-400">
+            <i class="fas fa-trophy text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navRewards">REWARDS</span>
+        </button>
+        <button onclick="navigateTo('profile-view')" id="n-profile" class="flex flex-col items-center justify-center w-12 text-slate-400">
+            <i class="fas fa-user-circle text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navProfile">PROFILE</span>
+        </button>
     </nav>
 </div>
 
 <script>
-    const clinics = ["NY031", "NY030", "NY029", "NY028", "NY027"];
-    const rewards = [
-        { name: "Lululemon $20", pts: "1,500" },
-        { name: "Alpha Loupes", pts: "1000" },
-        { name: "Supermarket $10", pts: "650" },
-        { name: "Back Massager", pts: "2,000" }
-    ];
-    const exercises = [
-        { name: "Brugger’s Relief Position", desc: "Sit at chair edge, rotate arms outward, and squeeze shoulder blades to reverse slouching." },
-        { name: "Wall Angels", desc: "Slide arms in 'V' and 'W' motions against a wall to strengthen the mid-back and open the chest." },
-        { name: "Chin Tucks", desc: "Draw the head straight back to strengthen neck flexors and correct forward-head posture." },
-        { name: "Prayer Stretch", desc: "Press palms together and lower them toward the waist to stretch the wrists." },
-        { name: "Wrist Extensor Stretch", desc: "Pull fingers downward with an extended arm to release tension from gripping instruments." },
-        { name: "Hip Flexor Lunges", desc: "Stretch the front of the hips to alleviate lower back pull caused by prolonged sitting." },
-        { name: "Cat-Cow", desc: "Alternate arching and rounding the back on all fours to maintain spinal mobility." },
-        { name: "Doorway Chest Stretch", desc: "Place forearms on a door frame and lean forward to open tight pectoral muscles." }
-    ];
-    const events = [
-        { t: "The Neutral Spine Symposium", d: "A workshop focused on core stabilization and spinal alignment specifically designed for long extractions and surgeries." },
-        { t: "Precision & Power", d: "Learn to integrate HIIT to improve cardiovascular stamina for long dental shifts." },
-        { t: "The Ergonomic Athlete", d: "Focus on scapular strength and rotator cuff resilience for dental high-performance." },
-        { t: "Cervical Freedom Intensive", d: "Corrective movements to eliminate 'forward head posture' caused by loupes." },
-        { t: "Flex & Flow Dentistry", d: "Dynamic stretching and hip opening to counteract sedentary operating positions." },
-        { t: "The Balanced Operatory", d: "Unilateral strength training to correct imbalances caused by twisting toward patients." },
-        { t: "Grip & Release", d: "Hand dexterity exercises to prevent carpal tunnel and forearm fatigue." },
-        { t: "Static to Kinetic", d: "60-second exercise bursts performable between patient appointments." }
-    ];
+    let currentLang = 'en';
+
+    const translations = {
+        en: {
+            singpassLogin: "Singpass Login",
+            ptrPull: "Pull to Refresh",
+            ptrSub: "Updating Ergonomic Metrics",
+            practitionerProfile: "PRACTITIONER PROFILE",
+            weeklyDataTitle: "WEEKLY ERGONOMIC DATA FROM ALPHA LOUPES",
+            totalProcedureTime: "Total Procedure Time",
+            minimalBending: "Minimal Bending",
+            mildBending: "Mild Bending",
+            severeBending: "Severe Bending",
+            mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun",
+            weeklySevereBending: "Weekly Severe Bending %",
+            improvement: "Improvement",
+            weeklyMildBending: "Weekly Mild Bending %",
+            worsening: "Worsening",
+            postureBreakdown: "Posture Breakdown",
+            neutral: "Neutral",
+            mildBend: "Mild Bend",
+            severeBend: "Severe Bend",
+            todaysPoints: "Today's Points",
+            points: "Points",
+            quickStretches: "Quick Clinical Stretches",
+            cervical: "Cervical",
+            wristRelease: "Wrist Release",
+            quickExercises: "Quick Clinical Exercises",
+            chinTucks: "Chin Tucks",
+            prayerStretch: "Prayer Stretch",
+            tabAnatomicMap: "ANATOMIC MAP",
+            tabLibrary: "LIBRARY",
+            tabEvents: "EVENTS",
+            trackWithAi: "Track with AI",
+            availableBalance: "Available Balance",
+            pts: "pts",
+            redeemRewards: "Redeem Rewards",
+            clinicLeaderboard: "Clinic Leaderboard",
+            aiTrackerTitle: "AI Performance Tracker",
+            validatingMovements: "Validating Movements...",
+            recordingSession: "RECORDING SESSION",
+            favouritedExercises: "Favourited Exercises",
+            favEx1: "External Rotation",
+            favEx2: "Band Pull-Apart",
+            settings: "Settings",
+            languageSetting: "Language / 언어 / 言語",
+            helpCentre: "Help Centre",
+            navHome: "HOME",
+            navLearn: "LEARN",
+            navRewards: "REWARDS",
+            navProfile: "PROFILE"
+        },
+        zh: {
+            singpassLogin: "Singpass 登录",
+            ptrPull: "下拉刷新",
+            ptrSub: "正在更新人体工学数据",
+            practitionerProfile: "医师个人档案",
+            weeklyDataTitle: "来自 ALPHA LOUPES 的每周人体工学数据",
+            totalProcedureTime: "总诊疗时间",
+            minimalBending: "轻微弯曲",
+            mildBending: "中度弯曲",
+            severeBending: "重度弯曲",
+            mon: "周一", tue: "周二", wed: "周三", thu: "周四", fri: "周五", sat: "周六", sun: "周日",
+            weeklySevereBending: "每周重度弯曲比例 %",
+            improvement: "改善",
+            weeklyMildBending: "每周中度弯曲比例 %",
+            worsening: "恶化",
+            postureBreakdown: "姿勢分析",
+            neutral: "自然中立",
+            mildBend: "中度弯曲",
+            severeBend: "重度弯曲",
+            todaysPoints: "今日积分",
+            points: "积分",
+            quickStretches: "快速临床拉伸",
+            cervical: "颈椎放松",
+            wristRelease: "手腕释放",
+            quickExercises: "快速临床运动",
+            chinTucks: "收下巴运动",
+            prayerStretch: "祷告式拉伸",
+            tabAnatomicMap: "人体解剖图",
+            tabLibrary: "动作库",
+            tabEvents: "研讨活动",
+            trackWithAi: "使用 AI 追踪",
+            availableBalance: "可用积分余额",
+            pts: "分",
+            redeemRewards: "兑换奖励",
+            clinicLeaderboard: "诊所排行榜",
+            aiTrackerTitle: "AI 性能追踪器",
+            validatingMovements: "正在验证动作...",
+            recordingSession: "正在记录训练",
+            favouritedExercises: "收藏的运动",
+            favEx1: "肩关节外旋",
+            favEx2: "弹力带扩胸",
+            settings: "设置",
+            languageSetting: "语言 / Language",
+            helpCentre: "帮助中心",
+            navHome: "首页",
+            navLearn: "学习",
+            navRewards: "奖励",
+            navProfile: "个人中心"
+        },
+        ko: {
+            singpassLogin: "Singpass 로그인",
+            ptrPull: "당겨서 새로고침",
+            ptrSub: "인체공학 데이터 업데이트 중",
+            practitionerProfile: "의사 프로필",
+            weeklyDataTitle: "ALPHA LOUPES 주간 인체공학 데이터",
+            totalProcedureTime: "총 진료 시간",
+            minimalBending: "최소 구부림",
+            mildBending: "경미한 구부림",
+            severeBending: "심한 구부림",
+            mon: "월", tue: "화", wed: "수", thu: "목", fri: "금", sat: "토", sun: "일",
+            weeklySevereBending: "주간 심한 구부림 비율 %",
+            improvement: "개선됨",
+            weeklyMildBending: "주간 경미한 구부림 비율 %",
+            worsening: "악화됨",
+            postureBreakdown: "자세 분석",
+            neutral: "중립",
+            mildBend: "약한 구부림",
+            severeBend: "심한 구부림",
+            todaysPoints: "오늘의 포인트",
+            points: "포인트",
+            quickStretches: "빠른 임상 스트레칭",
+            cervical: "경추 스트레칭",
+            wristRelease: "손목 이완",
+            quickExercises: "빠른 임상 운동",
+            chinTucks: "턱 당기기 운동",
+            prayerStretch: "기도 자세 스트레칭",
+            tabAnatomicMap: "해부학적 지도",
+            tabLibrary: "라이브러리",
+            tabEvents: "이벤트",
+            trackWithAi: "AI로 측정하기",
+            availableBalance: "사용 가능한 포인트",
+            pts: "점",
+            redeemRewards: "리워드 교환",
+            clinicLeaderboard: "클리닉 리더보드",
+            aiTrackerTitle: "AI 성능 트래커",
+            validatingMovements: "동작 검증 중...",
+            recordingSession: "세션 녹화 중",
+            favouritedExercises: "즐겨찾는 운동",
+            favEx1: "외회전 운동",
+            favEx2: "밴드 풀 어파트",
+            settings: "설정",
+            languageSetting: "언어 / Language",
+            helpCentre: "고객 센터",
+            navHome: "홈",
+            navLearn: "학습",
+            navRewards: "리워드",
+            navProfile: "프로필"
+        },
+        ja: {
+            singpassLogin: "Singpass ログイン",
+            ptrPull: "引っぱって更新",
+            ptrSub: "エルゴノミクス データを updates",
+            practitionerProfile: "医師プロフィール",
+            weeklyDataTitle: "ALPHA LOUPES 週間エルゴノミクスデータ",
+            totalProcedureTime: " total 施術時間",
+            minimalBending: "最小限の前屈",
+            mildBending: "軽度の前屈",
+            severeBending: "重度の前屈",
+            mon: "月", tue: "火", wed: "水", thu: "木", fri: "金", sat: "土", sun: "日",
+            weeklySevereBending: "週間 重度前屈率 %",
+            improvement: "改善",
+            weeklyMildBending: "週間 軽度前屈率 %",
+            worsening: " 악化",
+            postureBreakdown: "姿勢の内訳",
+            neutral: "ニュートラル",
+            mildBend: "軽度曲がり",
+            severeBend: "重度曲がり",
+            todaysPoints: "本日のポイント",
+            points: "pt",
+            quickStretches: "クイック臨床ストレッチ",
+            cervical: "首・頸椎ストレッチ",
+            wristRelease: "手首のリリース",
+            quickExercises: "クイック臨床エクササイズ",
+            chinTucks: "チンタック（顎引）",
+            prayerStretch: "ノーマン・ストレッチ",
+            tabAnatomicMap: "解剖学マップ",
+            tabLibrary: "ライブラリ",
+            tabEvents: "イベント",
+            trackWithAi: "AIで測定する",
+            availableBalance: "利用可能ポイント",
+            pts: "pt",
+            redeemRewards: "特典を交換",
+            clinicLeaderboard: "クリニックランキング",
+            aiTrackerTitle: "AI パフォーマンストラッカー",
+            validatingMovements: "動作を確認中...",
+            recordingSession: "セッション録画中",
+            favouritedExercises: "お気に入りエクササイズ",
+            favEx1: "外旋運動",
+            favEx2: "バンド・プルアパート",
+            settings: "設定",
+            languageSetting: "言語 / Language",
+            helpCentre: "ヘルプセンター",
+            navHome: "ホーム",
+            navLearn: "学ぶ",
+            navRewards: "リワード",
+            navProfile: "マイページ"
+        }
+    };
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(elem => {
+            const key = elem.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                elem.innerText = translations[lang][key];
+            }
+        });
+        document.getElementById('lang-select').value = lang;
+    }
 
     function performLogin() {
         document.getElementById('login-screen').style.display = 'none';
         document.querySelector('.nav-bottom').style.display = 'flex';
-        navigateTo('home-view');
-        initData();
-        setupPullToRefresh();
     }
 
-    function initData() {
-        document.getElementById('rewards-row').innerHTML = rewards.map(r => `
-            <div class="reward-card text-center">
-                <div class="w-full aspect-square bg-slate-50 rounded-xl mb-2 flex items-center justify-center text-slate-300 text-[8px]">GIFT</div>
-                <p class="font-bold text-[10px]">${r.name}</p>
-                <p class="text-blue-600 font-bold text-[9px] mt-1">${r.pts} pts</p>
-            </div>`).join('');
-
-        document.getElementById('sub-library').innerHTML = exercises.map((ex, i) => `
-            <div class="bg-white border rounded-3xl p-4 cursor-pointer" onclick="toggleD('ex-${i}')">
-                <div class="flex justify-between items-center"><span class="text-[11px] font-bold text-slate-800">${ex.name}</span><i class="fas fa-chevron-down text-slate-300 text-[10px]"></i></div>
-                <div id="ex-${i}" class="exercise-detail">
-                    <div class="video-placeholder"><i class="fas fa-play text-white/20"></i></div>
-                    <p class="text-[10px] text-slate-500 mb-4">${ex.desc}</p>
-                    <button onclick="navigateTo('scan-view')" class="w-full py-2 bg-blue-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest">Track with AI</button>
-                </div>
-            </div>`).join('');
-
-        document.getElementById('sub-events').innerHTML = events.map((ev, i) => `
-            <div class="p-4 border rounded-2xl bg-white shadow-sm">
-                <h4 class="text-xs font-bold text-slate-800">${ev.t}</h4>
-                <p class="text-[10px] text-slate-500 mt-1 mb-2 leading-relaxed">${ev.d}</p>
-                
-                <button onclick="toggleD('ev-form-${i}')" class="w-full py-2 bg-slate-100 rounded-lg text-[9px] font-bold text-slate-800 hover:bg-slate-200 transition">Join Now</button>
-                
-                <div id="ev-form-${i}" class="exercise-detail">
-                    <div class="pt-3 border-t border-slate-100 mt-2 space-y-2">
-                        <div>
-                            <label class="block text-[8px] font-bold text-slate-500 uppercase mb-0.5">Full Name</label>
-                            <input type="text" id="ev-name-${i}" value="Winnie Law" class="w-full border border-slate-200 rounded-lg p-2 text-[10px] font-semibold text-slate-800 focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-[8px] font-bold text-slate-500 uppercase mb-0.5">Phone Number</label>
-                            <input type="text" id="ev-phone-${i}" value="1234 5678" class="w-full border border-slate-200 rounded-lg p-2 text-[10px] font-semibold text-slate-800 focus:outline-none focus:border-blue-500">
-                        </div>
-                        <button id="ev-btn-${i}" onclick="submitEventBooking(${i})" class="w-full py-2.5 bg-blue-600 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-2">
-                            <span>Submit Registration</span>
-                        </button>
-                    </div>
-                </div>
-            </div>`).join('');
-
-        document.getElementById('leaderboard-list').innerHTML = clinics.map((c, i) => `
-            <div class="flex justify-between items-center p-3 border rounded-xl">
-                <span class="text-xs font-bold">${i+1}. ${c} Clinic</span>
-                <span class="text-[10px] font-bold text-blue-600">${5400 - (i*600)} pts</span>
-            </div>`).join('');
-    }
-
-    function submitEventBooking(index) {
-        const btn = document.getElementById(`ev-btn-${index}`);
-        btn.disabled = true;
-        btn.innerHTML = `<span class="spinner"></span> <span>Submitting...</span>`;
-        
-        setTimeout(() => {
-            btn.className = "w-full py-2.5 bg-emerald-600 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5";
-            btn.innerHTML = `<i class="fas fa-circle-check text-xs"></i> <span>Registered!</span>`;
-        }, 1500);
-    }
-
-    /* HIGH-IMPACT PULL TO REFRESH IMPLEMENTATION */
-    function setupPullToRefresh() {
-        const homeView = document.getElementById('home-view');
-        const ptrIndicator = document.getElementById('ptr-indicator');
-        const ptrArrow = document.getElementById('ptr-arrow');
-        const ptrSpinner = document.getElementById('ptr-spinner');
-        const ptrStatusText = document.getElementById('ptr-status-text');
-        const ptrSubText = document.getElementById('ptr-sub-text');
-        const ptrWrapper = document.getElementById('ptr-wrapper');
-        const ptrBox = document.getElementById('ptr-box');
-
-        let startY = 0;
-        let pullDistance = 0;
-        let isPulling = false;
-        let isRefreshing = false;
-        const threshold = 110;
-
-        homeView.addEventListener('touchstart', (e) => {
-            if (homeView.scrollTop === 0 && !isRefreshing) {
-                startY = e.touches[0].pageY;
-                isPulling = true;
-            }
-        }, { passive: true });
-
-        homeView.addEventListener('touchmove', (e) => {
-            if (!isPulling || isRefreshing) return;
-            const currentY = e.touches[0].pageY;
-            pullDistance = currentY - startY;
-
-            if (pullDistance > 0 && homeView.scrollTop === 0) {
-                const progress = Math.min(pullDistance / threshold, 1);
-                const displayDistance = Math.min(pullDistance * 0.75, threshold + 15);
-                
-                ptrIndicator.style.opacity = progress;
-                ptrIndicator.style.transform = `translateY(${displayDistance}px)`;
-                
-                // Rotates arrow based on distance pulled
-                const rotation = Math.min(pullDistance * 2.2, 180);
-                ptrArrow.style.transform = `rotate(${rotation}deg)`;
-                
-                // Dynamic feedback on reach threshold
-                if (pullDistance >= threshold) {
-                    ptrStatusText.innerText = "Release to Sync";
-                    ptrStatusText.classList.add('text-blue-400');
-                    ptrBox.style.backgroundColor = '#2563eb';
-                    ptrBox.style.color = '#ffffff';
-                } else {
-                    ptrStatusText.innerText = "Pull to Refresh";
-                    ptrStatusText.classList.remove('text-blue-400');
-                    ptrBox.style.backgroundColor = '#1e293b';
-                    ptrBox.style.color = '#60a5fa';
-                }
-            }
-        }, { passive: true });
-
-        homeView.addEventListener('touchend', () => {
-            if (!isPulling || isRefreshing) return;
-            isPulling = false;
-
-            if (pullDistance >= threshold) {
-                isRefreshing = true;
-                ptrWrapper.classList.add('loading');
-                ptrArrow.classList.add('hidden');
-                ptrSpinner.classList.remove('hidden');
-                
-                ptrStatusText.innerText = "Syncing Data...";
-                ptrStatusText.classList.add('text-blue-400');
-                ptrSubText.innerText = "Loupes Sensor Connected";
-
-                ptrIndicator.style.transform = `translateY(${threshold}px)`;
-
-                // Dynamic dataset update simulation
-                setTimeout(() => {
-                    initData();
-                    
-                    ptrStatusText.innerText = "Updated!";
-                    ptrStatusText.classList.replace('text-blue-400', 'text-emerald-400');
-                    ptrSubText.innerText = "Latest posture sync complete";
-
-                    setTimeout(() => {
-                        ptrIndicator.style.transform = 'translateY(0px)';
-                        ptrIndicator.style.opacity = '0';
-
-                        setTimeout(() => {
-                            ptrWrapper.classList.remove('loading');
-                            ptrSpinner.classList.add('hidden');
-                            ptrArrow.classList.remove('hidden');
-                            ptrArrow.style.transform = 'rotate(0deg)';
-                            ptrStatusText.innerText = "Pull to Refresh";
-                            ptrStatusText.classList.remove('text-emerald-400');
-                            ptrSubText.innerText = "Updating Ergonomic Metrics";
-                            ptrBox.style.backgroundColor = '#1e293b';
-                            ptrBox.style.color = '#60a5fa';
-                            isRefreshing = false;
-                        }, 300);
-                    }, 600);
-                }, 1400);
-            } else {
-                ptrIndicator.style.transform = 'translateY(0px)';
-                ptrIndicator.style.opacity = '0';
-            }
-            pullDistance = 0;
-        });
-    }
-
-    function navigateTo(id) {
+    function navigateTo(viewId) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelector('.nav-bottom').style.display = (id === 'scan-view') ? 'none' : 'flex';
-        if(id !== 'scan-view') {
-            document.querySelectorAll('.nav-bottom button').forEach(b => b.classList.replace('text-blue-600', 'text-slate-400'));
-            const activeBtn = document.getElementById('n-' + id.split('-')[0]);
-            if(activeBtn) activeBtn.classList.replace('text-slate-400', 'text-blue-600');
+        document.getElementById(viewId).classList.add('active');
+        
+        document.querySelectorAll('.nav-bottom button').forEach(b => {
+            if(!b.classList.contains('scan-btn')) {
+                b.classList.remove('text-blue-600');
+                b.classList.add('text-slate-400');
+            }
+        });
+
+        const activeNavMap = {
+            'home-view': 'n-home',
+            'learn-view': 'n-learn',
+            'rewards-view': 'n-rewards',
+            'profile-view': 'n-profile'
+        };
+
+        if(activeNavMap[viewId]) {
+            const navBtn = document.getElementById(activeNavMap[viewId]);
+            navBtn.classList.remove('text-slate-400');
+            navBtn.classList.add('text-blue-600');
         }
     }
 
-    function switchLearnTab(t) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-white'));
-        document.getElementById('tab-' + t).classList.add('active');
-        ['pain', 'library', 'events'].forEach(s => document.getElementById('sub-' + s).classList.add('hidden'));
-        document.getElementById('sub-' + t).classList.remove('hidden');
+    function toggleD(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('open');
     }
 
-    function toggleD(id) { document.getElementById(id).classList.toggle('open'); }
-    function openDiagnosis(t, d) { 
-        document.getElementById('diag-panel').classList.remove('hidden'); 
-        document.getElementById('diag-title').innerText = t; 
-        document.getElementById('diag-desc').innerText = d; 
+    function switchLearnTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('active');
+            b.classList.add('text-slate-500');
+        });
+        document.getElementById('sub-pain').classList.add('hidden');
+        document.getElementById('sub-library').classList.add('hidden');
+        document.getElementById('sub-events').classList.add('hidden');
+
+        if(tab === 'pain') {
+            document.getElementById('tab-pain').classList.add('active');
+            document.getElementById('sub-pain').classList.remove('hidden');
+        } else if(tab === 'library') {
+            document.getElementById('tab-library').classList.add('active');
+            document.getElementById('sub-library').classList.remove('hidden');
+        } else if(tab === 'events') {
+            document.getElementById('tab-events').classList.add('active');
+            document.getElementById('sub-events').classList.remove('hidden');
+        }
+    }
+
+    function openDiagnosis(title, desc) {
+        document.getElementById('diag-panel').classList.remove('hidden');
+        document.getElementById('diag-title').innerText = title;
+        document.getElementById('diag-desc').innerText = desc;
     }
 </script>
-
 </body>
 </html>
