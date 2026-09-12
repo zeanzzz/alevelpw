@@ -7,73 +7,239 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow: hidden; }
-        .app-container { max-width: 414px; margin: 0 auto; background: white; height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.1); }
-        .view { flex: 1; overflow-y: auto; padding-bottom: 110px; display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow: hidden; transition: background-color 0.3s ease; }
+        .app-container { max-width: 414px; margin: 0 auto; background: white; height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.1); transition: background-color 0.3s ease, color 0.3s ease; }
+        .view { flex: 1; overflow-y: auto; padding-bottom: 140px; display: none; position: relative; }
         .view.active { display: block; }
-        .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: none; justify-content: space-around; align-items: center; background: white; padding-bottom: 15px; z-index: 50; }
-        .scan-btn { width: 65px; height: 65px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-top: -40px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); border: 4px solid white; z-index: 60; }
-        .exercise-detail { transition: all 0.3s ease; max-height: 0; overflow: hidden; opacity: 0; }
-        .exercise-detail.open { max-height: 1000px; opacity: 1; margin-top: 12px; }
+        
+        /* LOGIN & EASTER EGG VIEWS */
+        #login-view, #easteregg-view { display: none; position: absolute; inset: 0; z-index: 100; background: white; flex-direction: column; justify-content: space-between; padding: 32px; box-sizing: border-box; overflow-y: auto; }
+        #login-view.active, #easteregg-view.active { display: flex; }
+
+        .nav-bottom { position: absolute; bottom: 0; width: 100%; height: 85px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; background: white; padding: 0 24px 15px 24px; z-index: 50; box-sizing: border-box; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .scan-btn { width: 60px; height: 60px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-top: -35px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); border: 4px solid white; z-index: 60; flex-shrink: 0; }
+        
+        /* Smooth Accordion Animations */
+        .accordion-content { transition: all 0.3s ease; max-height: 0; overflow: hidden; opacity: 0; }
+        .accordion-content.open { max-height: 1000px; opacity: 1; }
+
         .tab-btn.active { background: #1e293b; color: white; }
         .pain-node { position: absolute; width: 22px; height: 22px; background: rgba(239, 68, 68, 0.6); border-radius: 50%; border: 2px solid white; animation: pulse 2s infinite; cursor: pointer; z-index: 10; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 0.4; } 100% { transform: scale(1); opacity: 0.8; } }
-        .video-placeholder { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; items-center; justify-content: center; margin: 10px 0; position: relative; }
+        .video-placeholder { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 10px 0; position: relative; }
         .horizontal-scroll { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 15px; scrollbar-width: none; }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
-        .reward-card { min-width: 160px; background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 12px; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spinning { animation: spinSlow 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* THEME MODES */
+        body.theme-dark { background-color: #020617; }
+        body.theme-dark .app-container { background-color: #0f172a; color: #f8fafc; }
+        body.theme-dark .nav-bottom { background-color: #0f172a; border-top-color: #1e293b; }
+        body.theme-dark .scan-btn { border-color: #0f172a; }
+        body.theme-dark .theme-text-primary { color: #f8fafc !important; }
+        body.theme-dark .theme-card { background-color: #1e293b !important; border-color: #334155 !important; }
+        body.theme-dark .theme-card-sub { background-color: #0f172a !important; border-color: #334155 !important; color: #e2e8f0 !important; }
+        body.theme-dark #login-view, body.theme-dark #easteregg-view { background-color: #0f172a; color: #f8fafc; }
+        
+        body.theme-gradient { background-color: #180b2d; }
+        body.theme-gradient .app-container { background: linear-gradient(165deg, #0f172a 0%, #2e1065 50%, #4c1d95 100%); color: #ffffff; }
+        body.theme-gradient .nav-bottom { background-color: rgba(15, 23, 42, 0.95); border-top-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+        body.theme-gradient .scan-btn { background: linear-gradient(135deg, #a855f7, #ec4899); border-color: #180b2d; }
+        body.theme-gradient .theme-text-primary { color: #ffffff !important; }
+        body.theme-gradient .theme-card { background-color: rgba(255, 255, 255, 0.1) !important; border-color: rgba(255, 255, 255, 0.15) !important; backdrop-filter: blur(8px); }
+        body.theme-gradient .theme-card-sub { background-color: rgba(0, 0, 0, 0.2) !important; border-color: rgba(255, 255, 255, 0.1) !important; color: #f3e8ff !important; }
+        body.theme-gradient #login-view, body.theme-gradient #easteregg-view { background: linear-gradient(165deg, #0f172a 0%, #2e1065 50%, #4c1d95 100%); color: #ffffff; }
     </style>
 </head>
-<body>
+<body class="theme-light">
 
 <div class="app-container">
     
-    <!-- LOGIN SCREEN -->
-    <div id="login-screen" class="absolute inset-0 z-[100] bg-white flex flex-col items-center justify-center p-10 text-center">
-        <div class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold">12</div>
-        <h1 class="text-2xl font-bold text-slate-800">12 O’Clock</h1>
-        <button onclick="performLogin()" class="w-full bg-red-600 text-white py-4 rounded-xl font-bold mt-10 shadow-lg">singpass Login</button>
+    <!-- LOGIN / FRONT PAGE VIEW -->
+    <div id="login-view" class="active">
+        <div class="pt-8 text-center">
+            <!-- 5-Tap Logo Trigger for Easter Egg -->
+            <div onclick="handleLoginLogoTap()" class="cursor-pointer group inline-block select-none">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl font-black mb-4 shadow-lg group-hover:scale-105 transition-transform">12</div>
+            </div>
+            <h1 class="text-2xl font-extrabold tracking-tight theme-text-primary text-slate-800" data-i18n="appTitle">12 O’Clock</h1>
+            <p class="text-xs text-slate-500 mt-1" data-i18n="appSubtitle">Ergonomic Tracking for Dental Professionals</p>
+        </div>
+
+        <div class="space-y-3 my-auto w-full">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center mb-2" data-i18n="loginMethodsHeader">Select Login Method</p>
+            
+            <!-- Singpass Login Button -->
+            <button onclick="handleLogin('Singpass')" class="w-full bg-red-600 hover:bg-red-700 text-white p-3.5 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-all">
+                <i class="fas fa-shield-halved"></i> Singpass Login
+            </button>
+
+            <!-- Gmail Login Button -->
+            <button onclick="handleLogin('Gmail')" class="w-full bg-white text-slate-800 border border-slate-200 hover:bg-slate-50 p-3.5 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all">
+                <i class="fab fa-google text-red-500"></i> Continue with Gmail
+            </button>
+
+            <!-- Mobile Number Login Container -->
+            <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-2xl space-y-2">
+                <label class="block text-[9px] font-bold text-slate-600 uppercase tracking-wider" data-i18n="labelPhone">Mobile Number </label>
+                <div class="flex gap-2">
+                    <input type="tel" id="login-phone-input" placeholder="+65 9123 4567" class="flex-1 bg-white border border-slate-200 rounded-xl p-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-400">
+                    <button onclick="handlePhoneLogin()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 rounded-xl text-xs font-bold transition-colors">Login</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center pb-4">
+            <p class="text-[9px] text-slate-400">Secured by Alpha Loupes Ergonomics Engine v2.6</p>
+        </div>
+    </div>
+
+    <!-- EASTER EGG VIEW (Hidden Features) -->
+    <div id="easteregg-view">
+        <div class="pt-6 flex justify-between items-center">
+            <span class="text-[10px] font-bold text-purple-600 tracking-widest uppercase">Secret Easter Egg</span>
+            <button onclick="closeEasterEgg()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 text-sm"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="text-center my-auto space-y-4 py-10">
+            <div class="w-20 h-20 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-3xl mx-auto flex items-center justify-center text-white text-3xl font-black shadow-xl animate-pulse">
+                <i class="fas fa-code"></i>
+            </div>
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 tracking-tight">MADE BY GROUP NYO31</h2>
+                <div class="mt-4 inline-block bg-purple-50 border border-purple-200 px-4 py-2 rounded-2xl">
+                    <p class="text-xs text-purple-700 font-semibold">Main Editor: <strong class="text-slate-900 text-sm">Hans</strong></p>
+                </div>
+            </div>
+            <p class="text-[10px] text-slate-500 max-w-[260px] mx-auto pt-4">You successfully discovered the hidden developer credits modal by tapping the login page logo 5 times!</p>
+        </div>
+        <div class="text-center pb-6">
+            <button onclick="closeEasterEgg()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-2xl text-xs font-bold border border-slate-700">Back to Login</button>
+        </div>
     </div>
 
     <!-- HOME VIEW -->
-    <div id="home-view" class="view active p-6">
+    <div id="home-view" class="view p-6 pb-36">
         <header class="flex justify-between items-center mb-6">
-            <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Practitioner Profile</p><h2 class="text-xl font-bold text-slate-800">Dr. Winnie Law</h2></div>
-            <img src="https://ui-avatars.com/api/?name=Winnie+Law&background=0D8ABC&color=fff" class="w-10 h-10 rounded-full border-2 border-blue-500">
+            <div class="flex flex-col select-none">
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5">
+                    <span data-i18n="practitionerProfile">PRACTITIONER PROFILE</span>
+                    <i id="refresh-icon" class="fas fa-rotate text-[11px] text-blue-500 inline-block transition-transform duration-300"></i>
+                </p>
+                <div class="flex items-center gap-2 mt-0.5">
+                    <h2 id="display-doctor-name" class="text-2xl font-extrabold theme-text-primary text-slate-800 tracking-tight">Dr. Winnie Law</h2>
+                    <span id="refresh-toast" class="hidden text-[9px] bg-blue-600 text-white font-bold px-2 py-0.5 rounded-full animate-bounce" data-i18n="refreshedText">Refreshed!</span>
+                </div>
+            </div>
+            <div onclick="triggerRefresh()" class="w-10 h-10 rounded-full bg-blue-500 text-white font-semibold flex items-center justify-center text-sm border-2 border-white shadow-sm cursor-pointer hover:scale-105 transition-transform">WL</div>
         </header>
 
-        <div class="bg-slate-900 rounded-3xl p-5 text-white mb-6">
-            <p class="text-[10px] opacity-60 uppercase font-bold tracking-widest">Today's Points</p>
-            <h3 class="text-2xl font-bold">+140 Points</h3>
+        <!-- WEEKLY ERGONOMIC DATA CARD -->
+        <div class="bg-slate-900 rounded-3xl p-5 text-white mb-5 shadow-lg border border-slate-800">
+            <div class="flex justify-between items-center mb-4">
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest" data-i18n="weeklyDataTitle">WEEKLY ERGONOMIC DATA FROM ALPHA LOUPES</p>
+                <span class="bg-slate-800 text-slate-300 text-[9px] px-2.5 py-1 rounded-full font-medium"><span data-i18n="totalProcedureTime">Total Procedure Time</span>: <strong class="text-white">28h 15m</strong></span>
+            </div>
+
+            <div class="flex justify-center items-center gap-3 text-[9px] font-semibold mb-4 text-slate-300">
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> <span data-i18n="minimalBending">Minimal Bending</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> <span data-i18n="mildBending">Mild Bending</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block"></span> <span data-i18n="severeBending">Severe Bending</span></div>
+            </div>
+
+            <div class="relative pl-7 pb-5">
+                <div class="absolute left-0 top-0 bottom-5 flex flex-col justify-between text-[8px] text-slate-400 font-semibold">
+                    <span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span>
+                </div>
+                <div class="grid grid-cols-7 gap-2.5 items-end h-32 border-b border-slate-700/60 pb-1">
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div><div class="w-full bg-amber-500" style="height: 15%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 8%"></div><div class="w-full bg-amber-500" style="height: 17%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 75%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 12%"></div><div class="w-full bg-amber-500" style="height: 22%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 66%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 7%"></div><div class="w-full bg-amber-500" style="height: 23%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 70%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 10%"></div><div class="w-full bg-amber-500" style="height: 25%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 14%"></div><div class="w-full bg-amber-500" style="height: 19%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 67%"></div></div>
+                    <div class="flex flex-col h-full justify-end"><div class="w-full bg-red-500 rounded-t-sm" style="height: 11%"></div><div class="w-full bg-amber-500" style="height: 24%"></div><div class="w-full bg-emerald-500 rounded-b-sm" style="height: 65%"></div></div>
+                </div>
+                <div class="grid grid-cols-7 gap-2.5 text-center text-[9px] text-slate-400 pt-1 font-medium">
+                    <span data-i18n="mon">Mon</span><span data-i18n="tue">Tue</span><span data-i18n="wed">Wed</span><span data-i18n="thu">Thu</span><span data-i18n="fri">Fri</span><span data-i18n="sat">Sat</span><span data-i18n="sun">Sun</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BENDING STATS GRID -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="theme-card bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4 relative overflow-hidden">
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2 opacity-80" data-i18n="weeklySevereBending">Weekly Severe Bending %</p>
+                <div class="flex items-baseline justify-between">
+                    <span class="text-3xl font-extrabold theme-text-primary text-slate-900">8%</span>
+                    <div class="flex items-center text-emerald-500 font-bold text-xs gap-1">
+                        <i class="fas fa-arrow-down text-lg"></i>
+                        <div class="leading-tight text-[9px]">
+                            <div data-i18n="improvement">Improvement</div>
+                            <div class="font-extrabold">-3%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 text-right"><span class="bg-emerald-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full">+50 Pts</span></div>
+            </div>
+
+            <div class="theme-card bg-amber-50/50 border border-amber-100 rounded-2xl p-4">
+                <p class="text-[9px] font-bold text-slate-700 tracking-tight mb-2 opacity-80" data-i18n="weeklyMildBending">Weekly Mild Bending %</p>
+                <div class="flex items-baseline justify-between">
+                    <span class="text-3xl font-extrabold theme-text-primary text-slate-900">22%</span>
+                    <div class="flex items-center text-amber-500 font-bold text-xs gap-1">
+                        <i class="fas fa-arrow-up text-lg"></i>
+                        <div class="leading-tight text-[9px]">
+                            <div data-i18n="worsening">Worsening</div>
+                            <div class="font-extrabold">+2%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- POSTURE BREAKDOWN -->
+        <div class="theme-card bg-white border border-slate-100 rounded-3xl p-4 mb-6 shadow-sm">
+            <h4 class="font-bold theme-text-primary text-slate-800 text-xs mb-3" data-i18n="postureBreakdown">Posture Breakdown</h4>
+            <div class="space-y-2.5 text-[10px] font-semibold">
+                <div class="flex items-center gap-2">
+                    <span class="w-24 opacity-80"><span data-i18n="neutral">Neutral</span>: <strong class="theme-text-primary">70%</strong></span>
+                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full rounded-full" style="width: 70%"></div></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-24 opacity-80"><span data-i18n="mildBend">Mild Bend</span>: <strong class="theme-text-primary">22%</strong></span>
+                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden"><div class="bg-amber-500 h-full rounded-full" style="width: 22%"></div></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-24 opacity-80"><span data-i18n="severeBend">Severe Bend</span>: <strong class="theme-text-primary">8%</strong></span>
+                    <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden"><div class="bg-red-500 h-full rounded-full" style="width: 8%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 rounded-3xl p-5 text-white mb-6 border border-slate-800">
+            <p class="text-[10px] opacity-60 uppercase font-bold tracking-widest" data-i18n="todaysPoints">Today's Points</p>
+            <h3 class="text-2xl font-bold">+140 <span data-i18n="points">Points</span></h3>
             <div class="w-full bg-white/20 h-1.5 rounded-full mt-3"><div class="bg-blue-400 h-full rounded-full" style="width: 70%"></div></div>
         </div>
 
-        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider">Quick Clinical Stretches</h3>
+        <h3 class="font-bold theme-text-primary text-slate-800 mb-3 text-[10px] uppercase tracking-wider" data-i18n="quickStretches">Quick Clinical Stretches</h3>
         <div class="grid grid-cols-2 gap-3 mb-6">
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-blue-50 border border-blue-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-arrows-up-down text-blue-600 mb-2"></i>
-                <p class="font-bold text-xs">Cervical</p>
-                <p class="text-[9px] text-blue-600 font-bold">15 PTS</p>
+            <div onclick="navigateTo('scan-view')" class="theme-card p-4 bg-blue-50/60 border border-blue-100 rounded-2xl cursor-pointer">
+                <i class="fas fa-arrows-up-down text-blue-500 mb-2"></i>
+                <p class="font-bold text-xs theme-text-primary" data-i18n="cervical">Cervical</p>
+                <p class="text-[9px] text-blue-500 font-bold">15 PTS</p>
             </div>
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-orange-50 border border-orange-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-hand-sparkles text-orange-600 mb-2"></i>
-                <p class="font-bold text-xs">Wrist Release</p>
-                <p class="text-[9px] text-orange-600 font-bold">15 PTS</p>
-            </div>
-        </div>
-
-        <h3 class="font-bold text-slate-800 mb-3 text-[10px] uppercase tracking-wider">Quick Clinical Exercises</h3>
-        <div class="grid grid-cols-2 gap-3">
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-green-50 border border-green-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-child-reaching text-green-600 mb-2"></i>
-                <p class="font-bold text-xs">Chin Tucks</p>
-                <p class="text-[9px] text-green-700 font-bold">10 PTS</p>
-            </div>
-            <div onclick="navigateTo('scan-view')" class="p-4 bg-purple-50 border border-purple-100 rounded-2xl cursor-pointer">
-                <i class="fas fa-person-praying text-purple-600 mb-2"></i>
-                <p class="font-bold text-xs">Prayer Stretch</p>
-                <p class="text-[9px] text-purple-700 font-bold">10 PTS</p>
+            <div onclick="navigateTo('scan-view')" class="theme-card p-4 bg-orange-50/60 border border-orange-100 rounded-2xl cursor-pointer">
+                <i class="fas fa-hand-sparkles text-orange-500 mb-2"></i>
+                <p class="font-bold text-xs theme-text-primary" data-i18n="wristRelease">Wrist Release</p>
+                <p class="text-[9px] text-orange-500 font-bold">15 PTS</p>
             </div>
         </div>
     </div>
@@ -81,16 +247,15 @@
     <!-- LEARN VIEW -->
     <div id="learn-view" class="view">
         <div class="p-6">
-            <div class="flex space-x-2 mb-6 bg-slate-100 p-1 rounded-xl">
-                <button onclick="switchLearnTab('pain')" id="tab-pain" class="tab-btn active flex-1 py-2 rounded-lg text-[9px] font-bold">ANATOMIC MAP</button>
-                <button onclick="switchLearnTab('library')" id="tab-library" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold">LIBRARY</button>
-                <button onclick="switchLearnTab('events')" id="tab-events" class="tab-btn flex-1 py-2 rounded-lg text-slate-500 text-[9px] font-bold">EVENTS</button>
+            <div class="flex space-x-2 mb-6 theme-card bg-slate-100 p-1 rounded-xl">
+                <button onclick="switchLearnTab('pain')" id="tab-pain" class="tab-btn active flex-1 py-2 rounded-lg text-[9px] font-bold" data-i18n="tabAnatomicMap">ANATOMIC MAP</button>
+                <button onclick="switchLearnTab('library')" id="tab-library" class="tab-btn flex-1 py-2 rounded-lg text-slate-400 text-[9px] font-bold" data-i18n="tabLibrary">LIBRARY</button>
+                <button onclick="switchLearnTab('events')" id="tab-events" class="tab-btn flex-1 py-2 rounded-lg text-slate-400 text-[9px] font-bold" data-i18n="tabEvents">EVENTS</button>
             </div>
             
             <div id="sub-pain">
-                <div class="relative bg-slate-50 rounded-3xl h-[380px] border border-slate-200 flex items-center justify-center overflow-hidden">
-                    <i class="fas fa-person text-[320px] text-slate-200"></i>
-                    <!-- New Nodes -->
+                <div class="relative theme-card bg-slate-50 rounded-3xl h-[380px] border border-slate-200 flex items-center justify-center overflow-hidden">
+                    <i class="fas fa-person text-[320px] opacity-30 text-slate-400"></i>
                     <div onclick="openDiagnosis('Cervical Spine', 'Targeting scalene and upper trap tension.')" class="pain-node" style="top:12%; left:47%;"></div>
                     <div onclick="openDiagnosis('Upper Traps', 'Release shrugging tension from instrumentation.')" class="pain-node" style="top:18%; left:38%;"></div>
                     <div onclick="openDiagnosis('Forearm Flexors', 'Counteract tool gripping fatigue.')" class="pain-node" style="top:38%; left:28%;"></div>
@@ -101,12 +266,89 @@
                     <h4 id="diag-title" class="font-bold text-blue-400 text-sm"></h4>
                     <div class="video-placeholder"><i class="fas fa-play text-white/20 text-3xl"></i></div>
                     <p id="diag-desc" class="text-[10px] text-slate-400 mb-4"></p>
-                    <button onclick="navigateTo('scan-view')" class="w-full bg-blue-600 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest">Track with AI</button>
+                    <button onclick="navigateTo('scan-view')" class="w-full bg-blue-600 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest" data-i18n="trackWithAi">Track with AI</button>
                 </div>
             </div>
 
-            <div id="sub-library" class="hidden space-y-3"></div>
-            <div id="sub-events" class="hidden space-y-3"></div>
+            <!-- LIBRARY TAB CONTENT -->
+            <div id="sub-library" class="hidden space-y-3">
+                <div class="theme-card bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div onclick="toggleAccordion('lib-1')" class="p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50">
+                        <div>
+                            <span class="text-[9px] bg-blue-100 text-blue-600 font-bold px-2 py-0.5 rounded-md" data-i18n="badgeErgonomics">Ergonomics</span>
+                            <h4 class="font-bold text-xs theme-text-primary text-slate-800 mt-1" data-i18n="libTitle1">Loupes & Light Alignment</h4>
+                            <p class="text-[9px] text-slate-400 mt-0.5" data-i18n="libDesc1">Reduce neck flexion angle under magnification.</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-slate-300"></i>
+                    </div>
+                    <div id="lib-1" class="accordion-content bg-slate-900 p-4 text-white">
+                        <div class="video-placeholder"><i class="fas fa-play-circle text-blue-500 text-4xl animate-pulse"></i></div>
+                        <p class="text-[10px] text-slate-300 mb-3" data-i18n="libDesc1">Reduce neck flexion angle under magnification by adjusting focal angles.</p>
+                        <button onclick="navigateTo('scan-view')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest" data-i18n="practiceWithAi">Practice with AI</button>
+                    </div>
+                </div>
+
+                <div class="theme-card bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div onclick="toggleAccordion('lib-2')" class="p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50">
+                        <div>
+                            <span class="text-[9px] bg-green-100 text-green-600 font-bold px-2 py-0.5 rounded-md" data-i18n="badgeStretching">Stretching</span>
+                            <h4 class="font-bold text-xs theme-text-primary text-slate-800 mt-1" data-i18n="libTitle2">4-Minute Chair Decompression</h4>
+                            <p class="text-[9px] text-slate-400 mt-0.5" data-i18n="libDesc2">Quick reset between clinical appointments.</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-slate-300"></i>
+                    </div>
+                    <div id="lib-2" class="accordion-content bg-slate-900 p-4 text-white">
+                        <div class="video-placeholder"><i class="fas fa-play-circle text-green-500 text-4xl animate-pulse"></i></div>
+                        <p class="text-[10px] text-slate-300 mb-3" data-i18n="libDesc2">Quick reset routine between clinical appointments to relieve spinal loading.</p>
+                        <button onclick="navigateTo('scan-view')" class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest" data-i18n="practiceWithAi">Practice with AI</button>
+                    </div>
+                </div>
+
+                <div class="theme-card bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div onclick="toggleAccordion('lib-3')" class="p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50">
+                        <div>
+                            <span class="text-[9px] bg-purple-100 text-purple-600 font-bold px-2 py-0.5 rounded-md" data-i18n="badgeStrength">Strength</span>
+                            <h4 class="font-bold text-xs theme-text-primary text-slate-800 mt-1" data-i18n="libTitle3">Scapular Stability Drills</h4>
+                            <p class="text-[9px] text-slate-400 mt-0.5" data-i18n="libDesc3">Protect rotator cuffs during long procedures.</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-slate-300"></i>
+                    </div>
+                    <div id="lib-3" class="accordion-content bg-slate-900 p-4 text-white">
+                        <div class="video-placeholder"><i class="fas fa-play-circle text-purple-500 text-4xl animate-pulse"></i></div>
+                        <p class="text-[10px] text-slate-300 mb-3" data-i18n="libDesc3">Protect rotator cuffs during long procedures with targeted resistance bands.</p>
+                        <button onclick="navigateTo('scan-view')" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest" data-i18n="practiceWithAi">Practice with AI</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVENTS TAB CONTENT -->
+            <div id="sub-events" class="hidden space-y-4 pb-8">
+                <div class="theme-card p-5 bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-3xl shadow-sm">
+                    <span class="text-[9px] bg-blue-500/40 text-blue-200 font-bold px-2.5 py-1 rounded-md" data-i18n="badgeWebinar">Live Webinar</span>
+                    <h4 class="font-bold text-sm mt-2" data-i18n="eventTitle1">Advanced Dental Ergonomics 2026</h4>
+                    <p class="text-[10px] text-slate-300 mt-1 mb-4" data-i18n="eventSub1">Sept 15, 2026 • 2.0 CE Credits</p>
+                    
+                    <div class="bg-white/10 p-3.5 rounded-2xl backdrop-blur-sm space-y-3">
+                        <p class="text-[10px] font-bold text-blue-200 uppercase tracking-wider" data-i18n="workshopRegTitle">Workshop Registration / 研讨会报名</p>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-300 uppercase mb-1" data-i18n="labelFullName">Full Name / 姓名</label>
+                            <input type="text" id="workshop-name" placeholder="Dr. Winnie Law" class="w-full bg-black/30 border border-white/20 rounded-xl p-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-300 uppercase mb-1" data-i18n="labelPhone">Mobile Number / 手机号</label>
+                            <input type="tel" id="workshop-phone" placeholder="+65 9123 4567" class="w-full bg-black/30 border border-white/20 rounded-xl p-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
+                        </div>
+                        <button onclick="submitWorkshopRegistration()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl text-xs font-bold shadow-md transition-colors" data-i18n="submitRegistration">Submit & Complete Registration</button>
+                    </div>
+                </div>
+
+                <div class="theme-card p-4 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-2xl shadow-sm">
+                    <span class="text-[9px] bg-purple-500/40 text-purple-200 font-bold px-2 py-0.5 rounded-md" data-i18n="badgeWorkshop">Workshop</span>
+                    <h4 class="font-bold text-xs mt-2" data-i18n="eventTitle2">Posture Correction Masterclass</h4>
+                    <p class="text-[9px] text-slate-300 mt-1" data-i18n="eventSub2">Sept 28, 2026 • Hands-on Session</p>
+                    <button onclick="alert('Details requested!')" class="mt-3 bg-slate-700 hover:bg-slate-600 text-white text-[10px] font-bold px-4 py-2 rounded-xl transition-colors" data-i18n="viewDetails">View Details</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -114,13 +356,59 @@
     <div id="rewards-view" class="view">
         <div class="p-6">
             <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 text-white mb-8 shadow-lg">
-                <p class="text-[10px] font-bold opacity-80 uppercase tracking-widest">Available Balance</p>
-                <h2 class="text-4xl font-bold">2,606 <span class="text-sm opacity-60">pts</span></h2>
+                <p class="text-[10px] font-bold opacity-80 uppercase tracking-widest" data-i18n="availableBalance">Available Balance</p>
+                <h2 class="text-4xl font-bold">2,606 <span class="text-sm opacity-60" data-i18n="pts">pts</span></h2>
             </div>
-            <h3 class="font-bold text-slate-800 mb-4 text-xs uppercase tracking-widest">Redeem Rewards</h3>
-            <div class="horizontal-scroll" id="rewards-row"></div>
-            <h3 class="font-bold text-slate-800 mb-4 mt-8 text-xs uppercase tracking-widest">Clinic Leaderboard</h3>
-            <div id="leaderboard-list" class="space-y-2"></div>
+            <h3 class="font-bold theme-text-primary text-slate-800 mb-4 text-xs uppercase tracking-widest" data-i18n="redeemRewards">Redeem Rewards</h3>
+            <div class="horizontal-scroll" id="rewards-row">
+                <div class="min-w-[150px] theme-card bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-2"><i class="fas fa-mug-hot"></i></div>
+                        <h4 class="font-bold text-xs theme-text-primary text-slate-800" data-i18n="reward1">Coffee Voucher</h4>
+                    </div>
+                    <span class="text-[10px] font-bold text-blue-600 mt-3">500 pts</span>
+                </div>
+                <div class="min-w-[150px] theme-card bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold mb-2"><i class="fas fa-spa"></i></div>
+                        <h4 class="font-bold text-xs theme-text-primary text-slate-800" data-i18n="reward2">Massage Session</h4>
+                    </div>
+                    <span class="text-[10px] font-bold text-emerald-600 mt-3">1,500 pts</span>
+                </div>
+                <div class="min-w-[150px] theme-card bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold mb-2"><i class="fas fa-gift"></i></div>
+                        <h4 class="font-bold text-xs theme-text-primary text-slate-800" data-i18n="reward3">Ergo Cushion</h4>
+                    </div>
+                    <span class="text-[10px] font-bold text-purple-600 mt-3">2,200 pts</span>
+                </div>
+            </div>
+            
+            <h3 class="font-bold theme-text-primary text-slate-800 mb-4 mt-8 text-xs uppercase tracking-widest" data-i18n="clinicLeaderboard">Clinic Leaderboard</h3>
+            <div id="leaderboard-list" class="space-y-2">
+                <div class="theme-card bg-white border border-slate-100 p-3 rounded-2xl flex items-center justify-between shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 text-center font-extrabold text-xs text-blue-600">1</span>
+                        <div class="w-8 h-8 rounded-full bg-blue-500 text-white font-semibold flex items-center justify-center text-xs">WL</div>
+                        <div>
+                            <h4 id="leader-1-name" class="font-bold text-xs theme-text-primary text-slate-800">Dr. Winnie Law</h4>
+                            <p class="text-[8px] text-slate-400" data-i18n="deptOrtho">Orthodontics Dept</p>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-xs text-blue-600">3,450 pts</span>
+                </div>
+                <div class="theme-card bg-white border border-slate-100 p-3 rounded-2xl flex items-center justify-between shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 text-center font-extrabold text-xs text-slate-400">2</span>
+                        <div class="w-8 h-8 rounded-full bg-slate-300 text-white font-semibold flex items-center justify-center text-xs">JD</div>
+                        <div>
+                            <h4 class="font-bold text-xs theme-text-primary text-slate-800">Dr. James Doe</h4>
+                            <p class="text-[8px] text-slate-400" data-i18n="deptPerio">Periodontics Dept</p>
+                        </div>
+                    </div>
+                    <span class="font-extrabold text-xs text-slate-600">3,120 pts</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -128,12 +416,14 @@
     <div id="scan-view" class="view bg-slate-950">
         <div class="h-full flex flex-col items-center justify-between p-10 relative">
             <button onclick="navigateTo('home-view')" class="absolute top-10 right-6 text-white text-2xl p-2 z-[70]"><i class="fas fa-times"></i></button>
-            <div class="mt-12 text-center"><p class="text-green-400 animate-pulse text-[10px] font-bold uppercase tracking-widest mb-1">AI Performance Tracker</p><h3 class="text-white font-bold text-lg">Validating Movements...</h3></div>
+            <div class="mt-12 text-center">
+                <p class="text-green-400 animate-pulse text-[10px] font-bold uppercase tracking-widest mb-1" data-i18n="aiTrackerTitle">AI Performance Tracker</p>
+                <h3 class="text-white font-bold text-lg" data-i18n="validatingMovements">Validating Movements...</h3>
+            </div>
             <div class="w-full h-3/5 border-2 border-dashed border-green-500/30 rounded-[40px] relative overflow-hidden bg-black">
-                <div class="scan-line" style="background: #22c55e; box-shadow: 0 0 15px #22c55e;"></div>
                 <div class="absolute inset-0 flex items-center justify-center opacity-20"><i class="fas fa-user-check text-white text-[120px]"></i></div>
             </div>
-            <button class="px-8 py-3 bg-green-600 text-white rounded-full text-xs font-bold">RECORDING SESSION</button>
+            <button class="px-8 py-3 bg-green-600 text-white rounded-full text-xs font-bold uppercase tracking-wider" data-i18n="recordingSession">RECORDING SESSION</button>
         </div>
     </div>
 
@@ -141,126 +431,537 @@
     <div id="profile-view" class="view p-6">
         <div class="text-center mb-8">
             <img src="https://ui-avatars.com/api/?name=Winnie+Law&background=0D8ABC&color=fff" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-lg">
-            <h2 class="text-xl font-bold">Dr. Winnie Law</h2>
+            <h2 id="profile-doctor-name" class="text-xl font-bold theme-text-primary">Dr. Winnie Law</h2>
         </div>
-        <section class="mb-4">
-            <div onclick="toggleD('p-favs')" class="flex justify-between items-center p-4 border rounded-2xl cursor-pointer">
-                <span class="text-xs font-bold uppercase tracking-wider">Favourited Exercises</span><i class="fas fa-chevron-down text-slate-300"></i>
-            </div>
-            <div id="p-favs" class="exercise-detail">
-                <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800">External Rotation</div>
-                <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800">Band Pull-Apart</div>
-            </div>
-        </section>
+        
         <div class="space-y-3">
-            <div class="p-4 border rounded-2xl flex justify-between items-center text-xs font-bold"><span>Settings</span><i class="fas fa-cog opacity-20"></i></div>
-            <div class="p-4 border rounded-2xl flex justify-between items-center text-xs font-bold"><span>Help Centre</span><i class="fas fa-question-circle opacity-20"></i></div>
+            <div class="theme-card border rounded-2xl overflow-hidden cursor-pointer">
+                <div onclick="toggleD('p-favs')" class="p-4 flex justify-between items-center text-xs font-bold">
+                    <span data-i18n="favouritedExercises">Favourited Exercises</span>
+                    <i class="fas fa-chevron-down opacity-40"></i>
+                </div>
+                <div id="p-favs" class="accordion-content">
+                    <div class="p-4 pt-0">
+                        <div class="theme-card-sub p-3 bg-blue-50 border border-blue-100 rounded-xl mb-2 text-xs font-bold text-blue-800" data-i18n="favEx1">External Rotation</div>
+                        <div class="theme-card-sub p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs font-bold text-blue-800" data-i18n="favEx2">Band Pull-Apart</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theme-card border rounded-2xl overflow-hidden cursor-pointer">
+                <div onclick="toggleD('p-settings')" class="p-4 flex justify-between items-center text-xs font-bold">
+                    <span data-i18n="settings">Settings</span>
+                    <i class="fas fa-cog opacity-40"></i>
+                </div>
+                <div id="p-settings" class="accordion-content">
+                    <div class="p-4 pt-0 space-y-4">
+                        <div class="pt-3 border-t border-slate-100/20">
+                            <label class="block text-[9px] font-bold opacity-60 uppercase tracking-wider mb-2" data-i18n="themeSetting">Theme / 色彩模式</label>
+                            <select id="theme-select" onchange="changeTheme(this.value)" class="w-full theme-card-sub bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none">
+                                <option value="light" data-i18n="themeLight" selected>Light Mode (Default)</option>
+                                <option value="dark" data-i18n="themeDark">Dark Mode</option>
+                                <option value="gradient" data-i18n="themeGradient">Gradient Mode</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold opacity-60 uppercase tracking-wider mb-2" data-i18n="languageSetting">Language / 언어 / 言語</label>
+                            <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full theme-card-sub bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:outline-none">
+                                <option value="en">English</option>
+                                <option value="zh">中文 (Chinese)</option>
+                                <option value="ko">한국어 (Korean)</option>
+                                <option value="ja">日本語 (Japanese)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theme-card p-4 border rounded-2xl flex justify-between items-center text-xs font-bold cursor-pointer">
+                <span data-i18n="helpCentre">Help Centre</span>
+                <i class="fas fa-question-circle opacity-40"></i>
+            </div>
         </div>
     </div>
 
     <!-- NAV BOTTOM -->
     <nav class="nav-bottom">
-        <button onclick="navigateTo('home-view')" id="n-home" class="flex flex-col items-center text-blue-600"><i class="fas fa-house"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">HOME</span></button>
-        <button onclick="navigateTo('learn-view')" id="n-learn" class="flex flex-col items-center text-slate-400"><i class="fas fa-book-open"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">LEARN</span></button>
+        <button onclick="navigateTo('home-view')" id="n-home" class="flex flex-col items-center justify-center w-12 text-blue-600">
+            <i class="fas fa-house text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navHome">HOME</span>
+        </button>
+        <button onclick="navigateTo('learn-view')" id="n-learn" class="flex flex-col items-center justify-center w-12 text-slate-400">
+            <i class="fas fa-book-open text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navLearn">LEARN</span>
+        </button>
         <button onclick="navigateTo('scan-view')" class="scan-btn"><i class="fas fa-video text-2xl"></i></button>
-        <button onclick="navigateTo('rewards-view')" id="n-rewards" class="flex flex-col items-center text-slate-400"><i class="fas fa-trophy"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">REWARDS</span></button>
-        <button onclick="navigateTo('profile-view')" id="n-profile" class="flex flex-col items-center text-slate-400"><i class="fas fa-user-circle"></i><span class="text-[7px] mt-1 font-bold tracking-tighter">PROFILE</span></button>
+        <button onclick="navigateTo('rewards-view')" id="n-rewards" class="flex flex-col items-center justify-center w-12 text-slate-400">
+            <i class="fas fa-trophy text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navRewards">REWARDS</span>
+        </button>
+        <button onclick="navigateTo('profile-view')" id="n-profile" class="flex flex-col items-center justify-center w-12 text-slate-400">
+            <i class="fas fa-user-circle text-lg"></i>
+            <span class="text-[7px] mt-1 font-bold tracking-tighter" data-i18n="navProfile">PROFILE</span>
+        </button>
     </nav>
 </div>
 
 <script>
-    const clinics = ["NY031", "NY030", "NY029", "NY028", "NY027"];
-    const rewards = [
-        { name: "Lululemon $20", pts: "1,500" },
-        { name: "Alpha Loupes", pts: "1000" },
-        { name: "Supermarket $10", pts: "650" },
-        { name: "Back Massager", pts: "2,000" }
-    ];
-    const exercises = [
-        { name: "Brugger’s Relief Position", desc: "Sit at chair edge, rotate arms outward, and squeeze shoulder blades to reverse slouching." },
-        { name: "Wall Angels", desc: "Slide arms in 'V' and 'W' motions against a wall to strengthen the mid-back and open the chest." },
-        { name: "Chin Tucks", desc: "Draw the head straight back to strengthen neck flexors and correct forward-head posture." },
-        { name: "Prayer Stretch", desc: "Press palms together and lower them toward the waist to stretch the wrists." },
-        { name: "Wrist Extensor Stretch", desc: "Pull fingers downward with an extended arm to release tension from gripping instruments." },
-        { name: "Hip Flexor Lunges", desc: "Stretch the front of the hips to alleviate lower back pull caused by prolonged sitting." },
-        { name: "Cat-Cow", desc: "Alternate arching and rounding the back on all fours to maintain spinal mobility." },
-        { name: "Doorway Chest Stretch", desc: "Place forearms on a door frame and lean forward to open tight pectoral muscles." }
-    ];
-    const events = [
-        { t: "The Neutral Spine Symposium", d: "A workshop focused on core stabilization and spinal alignment specifically designed for long extractions and surgeries." },
-        { t: "Precision & Power", d: "Learn to integrate HIIT to improve cardiovascular stamina for long dental shifts." },
-        { t: "The Ergonomic Athlete", d: "Focus on scapular strength and rotator cuff resilience for dental high-performance." },
-        { t: "Cervical Freedom Intensive", d: "Corrective movements to eliminate 'forward head posture' caused by loupes." },
-        { t: "Flex & Flow Dentistry", d: "Dynamic stretching and hip opening to counteract sedentary operating positions." },
-        { t: "The Balanced Operatory", d: "Unilateral strength training to correct imbalances caused by twisting toward patients." },
-        { t: "Grip & Release", d: "Hand dexterity exercises to prevent carpal tunnel and forearm fatigue." },
-        { t: "Static to Kinetic", d: "60-second exercise bursts performable between patient appointments." }
-    ];
+    let currentLang = 'en';
+    let loginLogoTapCount = 0;
+    let loginLogoTapTimer = null;
 
-    function performLogin() {
-        document.getElementById('login-screen').style.display = 'none';
-        document.querySelector('.nav-bottom').style.display = 'flex';
+    const translations = {
+        en: {
+            appTitle: "12 O’Clock",
+            appSubtitle: "Ergonomic Tracking for Dental Professionals",
+            loginMethodsHeader: "Select Login Method",
+            labelFullName: "Full Name / 姓名",
+            labelPhone: "Mobile Number / 手机号",
+            submitRegistration: "Submit & Complete Registration",
+            workshopRegTitle: "Workshop Registration",
+            practitionerProfile: "PRACTITIONER PROFILE",
+            refreshedText: "Refreshed!",
+            weeklyDataTitle: "WEEKLY ERGONOMIC DATA FROM ALPHA LOUPES",
+            totalProcedureTime: "Total Procedure Time",
+            minimalBending: "Minimal Bending",
+            mildBending: "Mild Bending",
+            severeBending: "Severe Bending",
+            mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun",
+            weeklySevereBending: "Weekly Severe Bending %",
+            improvement: "Improvement",
+            weeklyMildBending: "Weekly Mild Bending %",
+            worsening: "Worsening",
+            postureBreakdown: "Posture Breakdown",
+            neutral: "Neutral",
+            mildBend: "Mild Bend",
+            severeBend: "Severe Bend",
+            todaysPoints: "Today's Points",
+            points: "Points",
+            quickStretches: "Quick Clinical Stretches",
+            cervical: "Cervical",
+            wristRelease: "Wrist Release",
+            tabAnatomicMap: "ANATOMIC MAP",
+            tabLibrary: "LIBRARY",
+            tabEvents: "EVENTS",
+            badgeErgonomics: "Ergonomics",
+            badgeStretching: "Stretching",
+            badgeStrength: "Strength",
+            libTitle1: "Loupes & Light Alignment",
+            libDesc1: "Reduce neck flexion angle under magnification.",
+            libTitle2: "4-Minute Chair Decompression",
+            libDesc2: "Quick reset between clinical appointments.",
+            libTitle3: "Scapular Stability Drills",
+            libDesc3: "Protect rotator cuffs during long procedures.",
+            practiceWithAi: "Practice with AI",
+            badgeWebinar: "Live Webinar",
+            eventTitle1: "Advanced Dental Ergonomics 2026",
+            eventSub1: "Sept 15, 2026 • 2.0 CE Credits",
+            badgeWorkshop: "Workshop",
+            eventTitle2: "Posture Correction Masterclass",
+            eventSub2: "Sept 28, 2026 • Hands-on Session",
+            viewDetails: "View Details",
+            availableBalance: "Available Balance",
+            pts: "pts",
+            redeemRewards: "Redeem Rewards",
+            reward1: "Coffee Voucher",
+            reward2: "Massage Session",
+            reward3: "Ergo Cushion",
+            clinicLeaderboard: "Clinic Leaderboard",
+            deptOrtho: "Orthodontics Dept",
+            deptPerio: "Periodontics Dept",
+            aiTrackerTitle: "AI Performance Tracker",
+            validatingMovements: "Validating Movements...",
+            recordingSession: "RECORDING SESSION",
+            favouritedExercises: "Favourited Exercises",
+            favEx1: "External Rotation",
+            favEx2: "Band Pull-Apart",
+            settings: "Settings",
+            themeSetting: "Theme / 色彩模式",
+            themeLight: "Light Mode",
+            themeDark: "Dark Mode",
+            themeGradient: "Gradient Mode",
+            languageSetting: "Language / 언어 / 言語",
+            helpCentre: "Help Centre",
+            navHome: "HOME",
+            navLearn: "LEARN",
+            navRewards: "REWARDS",
+            navProfile: "PROFILE"
+        },
+        zh: {
+            appTitle: "12点钟方向",
+            appSubtitle: "牙科专业人员人体工学追踪",
+            loginMethodsHeader: "选择登录方式",
+            labelFullName: "姓名 / Full Name",
+            labelPhone: "手机号码 / Mobile Number",
+            submitRegistration: "提交并完成注册",
+            workshopRegTitle: "研讨会报名登记",
+            practitionerProfile: "医师个人档案",
+            refreshedText: "数据已刷新！",
+            weeklyDataTitle: "来自 ALPHA LOUPES 的每周人体工学数据",
+            totalProcedureTime: "总诊疗时间",
+            minimalBending: "轻微弯曲",
+            mildBending: "中度弯曲",
+            severeBending: "重度弯曲",
+            mon: "周一", tue: "周二", wed: "周三", thu: "周四", fri: "周五", sat: "周六", sun: "周日",
+            weeklySevereBending: "每周重度弯曲比例 %",
+            improvement: "改善",
+            weeklyMildBending: "每周中度弯曲比例 %",
+            worsening: "恶化",
+            postureBreakdown: "姿势分析",
+            neutral: "自然中立",
+            mildBend: "中度弯曲",
+            severeBend: "重度弯曲",
+            todaysPoints: "今日积分",
+            points: "积分",
+            quickStretches: "快速临床拉伸",
+            cervical: "颈椎放松",
+            wristRelease: "手腕释放",
+            tabAnatomicMap: "人体解剖图",
+            tabLibrary: "动作库",
+            tabEvents: "研讨活动",
+            badgeErgonomics: "人体工学",
+            badgeStretching: "拉伸训练",
+            badgeStrength: "力量训练",
+            libTitle1: "放大镜与照明校准",
+            libDesc1: "在放大镜下减小颈部屈曲角度。",
+            libTitle2: "4分钟椅旁减压",
+            libDesc2: "临床预约之间的快速重置。",
+            libTitle3: "肩胛骨稳定性训练",
+            libDesc3: "在长时间操作中保护旋转袖肌群。",
+            practiceWithAi: "使用 AI 练习",
+            badgeWebinar: "线上研讨会",
+            eventTitle1: "2026先进牙科人体工学",
+            eventSub1: "2026年9月15日 • 2.0继续教育学分",
+            badgeWorkshop: "工作坊",
+            eventTitle2: "姿势矫正大师班",
+            eventSub2: "2026年9月28日 • 现场实操",
+            viewDetails: "查看详情",
+            availableBalance: "可用积分余额",
+            pts: "分",
+            redeemRewards: "兑换奖励",
+            reward1: "咖啡代金券",
+            reward2: "按摩理疗",
+            reward3: "人体工学坐垫",
+            clinicLeaderboard: "诊所排行榜",
+            deptOrtho: "正畸科",
+            deptPerio: "牙周科",
+            aiTrackerTitle: "AI 性能追踪器",
+            validatingMovements: "正在验证动作...",
+            recordingSession: "正在记录训练",
+            favouritedExercises: "收藏的运动",
+            favEx1: "肩关节外旋",
+            favEx2: "弹力带扩胸",
+            settings: "设置",
+            themeSetting: "主题色彩设置",
+            themeLight: "浅色模式",
+            themeDark: "深色模式",
+            themeGradient: "渐变模式",
+            languageSetting: "语言 / Language",
+            helpCentre: "帮助中心",
+            navHome: "首页",
+            navLearn: "学习",
+            navRewards: "奖励",
+            navProfile: "个人中心"
+        },
+        ko: {
+            appTitle: "12시 방향",
+            appSubtitle: "치과 전문인을 위한 인체공학 트래킹",
+            loginMethodsHeader: "로그인 방식 선택",
+            labelFullName: "성함 / Full Name",
+            labelPhone: "휴대폰 번호 / Mobile Number",
+            submitRegistration: "등록 완료하기",
+            workshopRegTitle: "워크숍 등록",
+            practitionerProfile: "의사 프로필",
+            refreshedText: "새로고침 완료!",
+            weeklyDataTitle: "ALPHA LOUPES 주간 인체공학 데이터",
+            totalProcedureTime: "총 진료 시간",
+            minimalBending: "최소 구부림",
+            mildBending: "경미한 구부림",
+            severeBending: "심한 구부림",
+            mon: "월", tue: "화", wed: "수", thu: "목", fri: "금", sat: "토", sun: "일",
+            weeklySevereBending: "주간 심한 구부림 비율 %",
+            improvement: "개선됨",
+            weeklyMildBending: "주간 경미한 구부림 비율 %",
+            worsening: "악화됨",
+            postureBreakdown: "자세 분석",
+            neutral: "중립",
+            mildBend: "약한 구부림",
+            severeBend: "심한 구부림",
+            todaysPoints: "오늘의 포인트",
+            points: "포인트",
+            quickStretches: "빠른 임상 스트레칭",
+            cervical: "경추 스트레칭",
+            wristRelease: "손목 이완",
+            tabAnatomicMap: "해부학적 지도",
+            tabLibrary: "라이브러리",
+            tabEvents: "이벤트",
+            badgeErgonomics: "인체공학",
+            badgeStretching: "스트레칭",
+            badgeStrength: "근력운동",
+            libTitle1: "루페 및 조명 정렬",
+            libDesc1: "확대경 사용 시 목의 굴곡각을 줄입니다.",
+            libTitle2: "4분 체어 감압 세션",
+            libDesc2: "진료 사이 빠른 휴식 및 리셋.",
+            libTitle3: "견갑골 안정화 드릴",
+            libDesc3: "장시간 시술 시 회전근개 보호.",
+            practiceWithAi: "AI로 연습하기",
+            badgeWebinar: "라이브 웨비나",
+            eventTitle1: "2026 치과 인체공학 심포지엄",
+            eventSub1: "2026년 9월 15일 • CE 학점",
+            badgeWorkshop: "워크숍",
+            eventTitle2: "자세 교정 마스터클래스",
+            eventSub2: "2026년 9월 28일 • 실습 세션",
+            viewDetails: "상세보기",
+            availableBalance: "사용 가능한 포인트",
+            pts: "점",
+            redeemRewards: "리워드 교환",
+            reward1: "커피 쿠폰",
+            reward2: "마사지 세션",
+            reward3: "인체공학 방석",
+            clinicLeaderboard: "클리닉 리더보드",
+            deptOrtho: "교정과",
+            deptPerio: "치주과",
+            aiTrackerTitle: "AI 성능 트래커",
+            validatingMovements: "동작 검증 중...",
+            recordingSession: "세션 녹화 중",
+            favouritedExercises: "즐겨찾는 운동",
+            favEx1: "외회전 운동",
+            favEx2: "밴드 풀 어파트",
+            settings: "설정",
+            themeSetting: "테마 색상 설정",
+            themeLight: "라이트 모드",
+            themeDark: "다크 모드",
+            themeGradient: "그라데이션 모드",
+            languageSetting: "언어 / Language",
+            helpCentre: "고객 센터",
+            navHome: "홈",
+            navLearn: "학습",
+            navRewards: "리워드",
+            navProfile: "프로필"
+        },
+        ja: {
+            appTitle: "12 O’Clock",
+            appSubtitle: "歯科医療従事者向けエルゴノミクス管理",
+            loginMethodsHeader: "ログイン方法を選択",
+            labelFullName: "お名前 / Full Name",
+            labelPhone: "携帯電話番号 / Mobile Number",
+            submitRegistration: "登録して始める",
+            workshopRegTitle: "ワークショップ登録",
+            practitionerProfile: "医師プロフィール",
+            refreshedText: "更新完了！",
+            weeklyDataTitle: "ALPHA LOUPES 週間エルゴノミクスデータ",
+            totalProcedureTime: "施術合計時間",
+            minimalBending: "最小限の前屈",
+            mildBending: "軽度の前屈",
+            severeBending: "重度の前屈",
+            mon: "月", tue: "火", wed: "水", thu: "木", fri: "金", sat: "土", sun: "日",
+            weeklySevereBending: "週間 重度前屈率 %",
+            improvement: "改善",
+            weeklyMildBending: "週間 軽度前屈率 %",
+            worsening: "悪化",
+            postureBreakdown: "姿勢の内訳",
+            neutral: "ニュートラル",
+            mildBend: "軽度曲がり",
+            severeBend: "重度曲がり",
+            todaysPoints: "本日のポイント",
+            points: "pt",
+            quickStretches: "クイック臨床ストレッチ",
+            cervical: "首・頸椎ストレッチ",
+            wristRelease: "手首のリリース",
+            tabAnatomicMap: "解剖学マップ",
+            tabLibrary: "ライブラリ",
+            tabEvents: "イベント",
+            badgeErgonomics: "エルゴノミクス",
+            badgeStretching: "ストレッチ",
+            badgeStrength: "筋力強化",
+            libTitle1: "ルーペ＆ライト調整",
+            libDesc1: "拡大鏡下での首の屈曲角を軽減します。",
+            libTitle2: "4分間チェア減圧法",
+            libDesc2: "診療の合間のクイックリセット。",
+            libTitle3: "肩甲骨安定化ドリル",
+            libDesc3: "長時間の処置から回旋筋腱板を保護。",
+            practiceWithAi: "AIで実践する",
+            badgeWebinar: "ライブウェビナー",
+            eventTitle1: "高度歯科エルゴノミクス 2026",
+            eventSub1: "2026年9月15日 • 単位付与",
+            badgeWorkshop: "ワークショップ",
+            eventTitle2: "姿勢矯正マスタークラス",
+            eventSub2: "2026年9月28日 • 実技セッション",
+            viewDetails: "詳細を見る",
+            availableBalance: "利用可能ポイント",
+            pts: "pt",
+            redeemRewards: "特典を交換",
+            reward1: "コーヒーチケット",
+            reward2: "マッサージセッション",
+            reward3: "エルゴクッション",
+            clinicLeaderboard: "クリニックランキング",
+            deptOrtho: "矯正歯科",
+            deptPerio: "歯周病科",
+            aiTrackerTitle: "AI パフォーマンストラッカー",
+            validatingMovements: "動作を確認中...",
+            recordingSession: "セッション録画中",
+            favouritedExercises: "お気に入りエクササイズ",
+            favEx1: "外旋運動",
+            favEx2: "バンド・プルアパート",
+            settings: "設定",
+            themeSetting: "テーマカラー設定",
+            themeLight: "ライトモード",
+            themeDark: "ダークモード",
+            themeGradient: "グラデーションモード",
+            languageSetting: "言語 / Language",
+            helpCentre: "ヘルプセンター",
+            navHome: "ホーム",
+            navLearn: "学ぶ",
+            navRewards: "リワード",
+            navProfile: "マイページ"
+        }
+    };
+
+    function handleLogin(method) {
+        document.getElementById('login-view').classList.remove('active');
         navigateTo('home-view');
-        initData();
     }
 
-    function initData() {
-        document.getElementById('rewards-row').innerHTML = rewards.map(r => `
-            <div class="reward-card text-center">
-                <div class="w-full aspect-square bg-slate-50 rounded-xl mb-2 flex items-center justify-center text-slate-300 text-[8px]">GIFT</div>
-                <p class="font-bold text-[10px]">${r.name}</p>
-                <p class="text-blue-600 font-bold text-[9px] mt-1">${r.pts} pts</p>
-            </div>`).join('');
-
-        document.getElementById('sub-library').innerHTML = exercises.map((ex, i) => `
-            <div class="bg-white border rounded-3xl p-4 cursor-pointer" onclick="toggleD('ex-${i}')">
-                <div class="flex justify-between items-center"><span class="text-[11px] font-bold text-slate-800">${ex.name}</span><i class="fas fa-chevron-down text-slate-300 text-[10px]"></i></div>
-                <div id="ex-${i}" class="exercise-detail">
-                    <div class="video-placeholder"><i class="fas fa-play text-white/20"></i></div>
-                    <p class="text-[10px] text-slate-500 mb-4">${ex.desc}</p>
-                    <button onclick="navigateTo('scan-view')" class="w-full py-2 bg-blue-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest">Track with AI</button>
-                </div>
-            </div>`).join('');
-
-        document.getElementById('sub-events').innerHTML = events.map(ev => `
-            <div class="p-4 border rounded-2xl bg-white shadow-sm">
-                <h4 class="text-xs font-bold text-slate-800">${ev.t}</h4>
-                <p class="text-[10px] text-slate-500 mt-1 mb-2 leading-relaxed">${ev.d}</p>
-                <button class="w-full py-2 bg-slate-100 rounded-lg text-[9px] font-bold text-slate-800">Book Workshop</button>
-            </div>`).join('');
-
-        document.getElementById('leaderboard-list').innerHTML = clinics.map((c, i) => `
-            <div class="flex justify-between items-center p-3 border rounded-xl">
-                <span class="text-xs font-bold">${i+1}. ${c} Clinic</span>
-                <span class="text-[10px] font-bold text-blue-600">${5400 - (i*600)} pts</span>
-            </div>`).join('');
-    }
-
-    function navigateTo(id) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelector('.nav-bottom').style.display = (id === 'scan-view') ? 'none' : 'flex';
-        if(id !== 'scan-view') {
-            document.querySelectorAll('.nav-bottom button').forEach(b => b.classList.replace('text-blue-600', 'text-slate-400'));
-            const activeBtn = document.getElementById('n-' + id.split('-')[0]);
-            if(activeBtn) activeBtn.classList.replace('text-slate-400', 'text-blue-600');
+    function handlePhoneLogin() {
+        const phone = document.getElementById('login-phone-input').value.trim();
+        if(phone) {
+            document.getElementById('login-view').classList.remove('active');
+            navigateTo('home-view');
+        } else {
+            alert('Please enter your mobile number.');
         }
     }
 
-    function switchLearnTab(t) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-white'));
-        document.getElementById('tab-' + t).classList.add('active');
-        ['pain', 'library', 'events'].forEach(s => document.getElementById('sub-' + s).classList.add('hidden'));
-        document.getElementById('sub-' + t).classList.remove('hidden');
+    function handleLoginLogoTap() {
+        loginLogoTapCount++;
+        clearTimeout(loginLogoTapTimer);
+        
+        if (loginLogoTapCount >= 5) {
+            loginLogoTapCount = 0;
+            document.getElementById('easteregg-view').classList.add('active');
+            return;
+        }
+
+        loginLogoTapTimer = setTimeout(() => {
+            loginLogoTapCount = 0;
+        }, 1000);
     }
 
-    function toggleD(id) { document.getElementById(id).classList.toggle('open'); }
-    function openDiagnosis(t, d) { 
-        document.getElementById('diag-panel').classList.remove('hidden'); 
-        document.getElementById('diag-title').innerText = t; 
-        document.getElementById('diag-desc').innerText = d; 
+    function closeEasterEgg() {
+        document.getElementById('easteregg-view').classList.remove('active');
+    }
+
+    function triggerRefresh() {
+        const icon = document.getElementById('refresh-icon');
+        const toast = document.getElementById('refresh-toast');
+        
+        if(!icon || !toast) return;
+        
+        icon.classList.remove('spinning');
+        void icon.offsetWidth;
+        icon.classList.add('spinning');
+        toast.classList.remove('hidden');
+
+        setTimeout(() => {
+            icon.classList.remove('spinning');
+            setTimeout(() => toast.classList.add('hidden'), 1200);
+        }, 800);
+    }
+
+    function changeTheme(theme) {
+        document.body.classList.remove('theme-dark', 'theme-gradient', 'theme-light');
+        if (theme === 'dark') {
+            document.body.classList.add('theme-dark');
+        } else if (theme === 'gradient') {
+            document.body.classList.add('theme-gradient');
+        } else {
+            document.body.classList.add('theme-light');
+        }
+        document.getElementById('theme-select').value = theme;
+    }
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(elem => {
+            const key = elem.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                elem.innerText = translations[lang][key];
+            }
+        });
+        document.getElementById('lang-select').value = lang;
+    }
+
+    function submitWorkshopRegistration() {
+        const nameInput = document.getElementById('workshop-name').value.trim();
+        const phoneInput = document.getElementById('workshop-phone').value.trim();
+        if(nameInput) {
+            document.getElementById('display-doctor-name').innerText = nameInput;
+            document.getElementById('profile-doctor-name').innerText = nameInput;
+            const leaderName1 = document.getElementById('leader-1-name');
+            if (leaderName1) leaderName1.innerText = nameInput;
+        }
+        alert(currentLang === 'zh' ? '注册成功！' : 'Successfully registered for webinar!');
+    }
+
+    function navigateTo(viewId) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        
+        document.querySelectorAll('.nav-bottom button').forEach(b => {
+            if(!b.classList.contains('scan-btn')) {
+                b.classList.remove('text-blue-600');
+                b.classList.add('text-slate-400');
+            }
+        });
+
+        const activeNavMap = {
+            'home-view': 'n-home',
+            'learn-view': 'n-learn',
+            'rewards-view': 'n-rewards',
+            'profile-view': 'n-profile'
+        };
+
+        if(activeNavMap[viewId]) {
+            const navBtn = document.getElementById(activeNavMap[viewId]);
+            navBtn.classList.remove('text-slate-400');
+            navBtn.classList.add('text-blue-600');
+        }
+    }
+
+    function toggleD(id) {
+        document.getElementById(id).classList.toggle('open');
+    }
+
+    function toggleAccordion(id) {
+        document.getElementById(id).classList.toggle('open');
+    }
+
+    function switchLearnTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('active');
+            b.classList.add('text-slate-400');
+        });
+        document.getElementById('sub-pain').classList.add('hidden');
+        document.getElementById('sub-library').classList.add('hidden');
+        document.getElementById('sub-events').classList.add('hidden');
+
+        if(tab === 'pain') {
+            document.getElementById('tab-pain').classList.add('active');
+            document.getElementById('sub-pain').classList.remove('hidden');
+        } else if(tab === 'library') {
+            document.getElementById('tab-library').classList.add('active');
+            document.getElementById('sub-library').classList.remove('hidden');
+        } else if(tab === 'events') {
+            document.getElementById('tab-events').classList.add('active');
+            document.getElementById('sub-events').classList.remove('hidden');
+        }
+    }
+
+    function openDiagnosis(title, desc) {
+        document.getElementById('diag-panel').classList.remove('hidden');
+        document.getElementById('diag-title').innerText = title;
+        document.getElementById('diag-desc').innerText = desc;
     }
 </script>
-
 </body>
 </html>
